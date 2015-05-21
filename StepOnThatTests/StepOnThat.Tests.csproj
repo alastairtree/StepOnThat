@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Http\HttpStepTests.cs" />
     <Compile Include="StepTestsBase.cs" />
+    <Compile Include="Browser\BrowserTests.cs" />
     <Compile Include="InstructionsReaderWriterTests.cs" />
     <Compile Include="InstructionsRunnerTests.cs" />
     <Compile Include="InstructionsTests.cs" />
