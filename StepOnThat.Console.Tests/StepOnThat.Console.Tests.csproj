@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{499E4EC1-7FF1-401A-A302-91B4CC31D7E9}</ProjectGuid>
+    <ProjectGuid>{EAC5FE61-1A00-4F41-BE4E-EC7A4A40BF2A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StepOnThat.Tests</RootNamespace>
-    <AssemblyName>StepOnThat.Tests</AssemblyName>
+    <RootNamespace>StepOnThat.Console.Tests</RootNamespace>
+    <AssemblyName>StepOnThat.Console.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -51,19 +51,17 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="InstructionsReaderWriterTests.cs" />
-    <Compile Include="InstructionsRunnerTests.cs" />
-    <Compile Include="InstructionsTests.cs" />
+    <Compile Include="OptionsTests.cs" />
+    <Compile Include="ProgramTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StepTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StepOnThat\StepOnThat.csproj">
-      <Project>{C427C3DB-4B11-4337-A388-7391862CA88A}</Project>
-      <Name>StepOnThat</Name>
+    <ProjectReference Include="..\StepOnThat.Console\StepOnThat.Console.csproj">
+      <Project>{5C680786-644D-470B-8BC4-826096C4E3FC}</Project>
+      <Name>StepOnThat.Console</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

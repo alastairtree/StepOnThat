@@ -13,5 +13,16 @@ namespace StepOnThat.Tests
             var expected = new Instructions(new List<Step>());
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void GetHashCodeTest()
+        {
+            Assert.AreEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
+                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode());
+            Assert.AreNotEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
+                new Instructions(new[] {new Step {Name = "test2"}}).GetHashCode());
+            Assert.AreNotEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
+                new Instructions(new[] {new Step {Type = "test"}}).GetHashCode());
+        }
     }
 }

@@ -8,9 +8,10 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StepOnThat</RootNamespace>
-    <AssemblyName>StepOnThat</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <AssemblyName>StepOnThat.Lib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,10 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExMethods.cs" />
     <Compile Include="InstructionsReaderWriter.cs" />
     <Compile Include="Instructions.cs" />
+    <Compile Include="InstructionsRunner.cs" />
+    <Compile Include="IStepResult.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

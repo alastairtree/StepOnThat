@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("StepOnThat")]
+[assembly: AssemblyTitle("StepOnThat.Console.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("StepOnThat")]
+[assembly: AssemblyProduct("StepOnThat.Console.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("859e023f-2a12-467d-8c06-642a8f6f6915")]
+[assembly: Guid("402cb20e-9f5b-4afa-92ca-9d9188b0b82a")]
 
 // Version information for an assembly consists of the following four values:
 //

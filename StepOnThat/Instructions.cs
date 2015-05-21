@@ -14,6 +14,11 @@ namespace StepOnThat
             Steps = steps;
         }
 
+        public Instructions(IEnumerable<Step> steps)
+        {
+            Steps = new List<Step>(steps);
+        }
+
         public IList<Step> Steps { get; set; }
 
         public override bool Equals(object obj)
@@ -26,7 +31,12 @@ namespace StepOnThat
 
         public override int GetHashCode()
         {
-            return Steps.GetHashCode();
+            int hash = 27;
+            foreach (var step in Steps)
+            {
+                hash = (13*hash) + step.GetHashCode();
+            }
+            return hash;
         }
     }
 }
