@@ -18,19 +18,6 @@ namespace StepOnThat
 
         public async Task<IStepResult> RunAsync()
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            IStepResult result = await RunAsyncCore();
-
-            stopwatch.Stop();
-            result.Duration = stopwatch.Elapsed;
-
-            return result;
-        }
-
-        protected virtual async Task<IStepResult> RunAsyncCore()
-        {
             return await Task.Run(() => StepResult.Succeeded());
         }
 
@@ -41,7 +28,7 @@ namespace StepOnThat
                 Type,
                 Name
             }
-                .GetHashCode();
+            .GetHashCode();
         }
     }
 }

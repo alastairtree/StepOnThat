@@ -1,6 +1,5 @@
-﻿using System.Threading;
+﻿using NUnit.Framework;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
 namespace StepOnThat.Tests
 {
@@ -24,12 +23,11 @@ namespace StepOnThat.Tests
         }
 
         [Test]
-        public async Task RunAsyncTesthasDuration()
+        public async Task RunAsyncTesthasNoError()
         {
             var step = new Step();
             IStepResult result = await step.RunAsync();
-            Thread.Sleep(1);
-            Assert.True(result.Duration.TotalMilliseconds > 0);
+            Assert.True(result.Error == null);
         }
 
         [Test]

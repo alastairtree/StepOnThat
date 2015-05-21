@@ -6,6 +6,13 @@ namespace StepOnThat
 {
     public class InstructionsRunner
     {
+        private IExecuteSteps stepRunner;
+
+        public InstructionsRunner(IExecuteSteps stepRunner)
+        {
+            this.stepRunner = stepRunner;
+        }
+
         public async Task<bool> Run(Instructions instructions)
         {
             if (instructions == null || instructions.Steps.IsNullOrEmpty())
@@ -15,7 +22,7 @@ namespace StepOnThat
 
             foreach (var step in instructions.Steps)
             {
-                var result = await step.RunAsync();
+                var result = await stepRunner.ExecuteStep(step);
                 results.Add(result);
 
                 if (!result.Success)

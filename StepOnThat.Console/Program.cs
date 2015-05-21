@@ -7,6 +7,8 @@ namespace StepOnThat
 {
     public class Program
     {
+        static InstructionsRunner runner = new InstructionsRunner(new StepRunner());
+
         public static int Main(string[] args)
         {
             try
@@ -32,7 +34,6 @@ namespace StepOnThat
                 if (File.Exists(options.File))
                 {
                     var ins = InstructionsReaderWriter.ReadFile(options.File);
-                    var runner = new InstructionsRunner();
 
                     var result = await runner.Run(ins);
 

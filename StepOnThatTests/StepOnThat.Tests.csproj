@@ -55,6 +55,7 @@
     <Compile Include="InstructionsRunnerTests.cs" />
     <Compile Include="InstructionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepRunnerTest.cs" />
     <Compile Include="StepTests.cs" />
   </ItemGroup>
   <ItemGroup>
