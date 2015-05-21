@@ -13,10 +13,11 @@ namespace StepOnThat
             var val = obj as Step;
             if (val == null) return false;
 
-            return Type == val.Type;
+            return  Type == val.Type &&
+                    Name == val.Name;
         }
 
-        public async Task<IStepResult> RunAsync()
+        public virtual async Task<IStepResult> RunAsync()
         {
             return await Task.Run(() => StepResult.Succeeded());
         }

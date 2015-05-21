@@ -37,5 +37,17 @@ namespace StepOnThat.Tests
             var actual = new Step {Type = "Test", Name = "Test"};
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void SimpleStepsAreNotEqualByName()
+        {
+            var expected = new Step { Type = "Test", Name = "Test" };
+            var actual   = new Step { Type = "Test", Name = "NotTest" };
+            Assert.AreNotEqual(expected, actual);
+
+            expected = new Step { Type = "Test", Name = "Test" };
+            actual = new Step { Type = "TestName", Name = "Test" };
+            Assert.AreNotEqual(expected, actual);
+        }
     }
 }
