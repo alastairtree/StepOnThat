@@ -5,7 +5,7 @@ namespace StepOnThat
 {
     public class Step
     {
-        public string Type { get; set; }
+        public string Type { get { return this.GetType().Name; } }
         public string Name { get; set; }
 
         public override bool Equals(object obj)

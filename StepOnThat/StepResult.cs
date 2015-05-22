@@ -4,9 +4,9 @@ namespace StepOnThat
 {
     public class StepResult : IStepResult
     {
-        public bool Success { get; private set; }
-        public Exception Error { get; private set; }
-        public TimeSpan Duration { get; set; }
+        public virtual bool Success { get; private set; }
+        public virtual Exception Error { get; private set; }
+        public virtual TimeSpan Duration { get; set; }
 
         public static StepResult Succeeded()
         {

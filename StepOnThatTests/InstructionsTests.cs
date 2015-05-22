@@ -15,14 +15,21 @@ namespace StepOnThat.Tests
         }
 
         [Test]
-        public void GetHashCodeTest()
+        public void DifferentInstructionsDifferentHashCode()
         {
-            Assert.AreEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
-                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode());
-            Assert.AreNotEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
-                new Instructions(new[] {new Step {Name = "test2"}}).GetHashCode());
-            Assert.AreNotEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
-                new Instructions(new[] {new Step {Type = "test"}}).GetHashCode());
+            Assert.AreNotEqual(
+                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
+                new Instructions(new[] {new Step {Name = "test2"}}).GetHashCode()
+            );
+        }
+
+        [Test]
+        public void SameInstructionsSameHashCode()
+        {
+            Assert.AreEqual(
+                new Instructions(new[] { new Step { Name = "test" } }).GetHashCode(),
+                new Instructions(new[] { new Step { Name = "test" } }).GetHashCode()
+            );
         }
     }
 }

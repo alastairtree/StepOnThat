@@ -23,9 +23,8 @@ namespace StepOnThat.Tests
             {
                 new Instructions()
                 , new Instructions(new List<Step>())
-                , new Instructions(new List<Step> {new Step {Name = "test", Type = "Test"}})
+                , new Instructions(new List<Step> {new Step { Name = "test" }})
             };
-
 
             foreach (Instructions instruction in instructions)
             {
