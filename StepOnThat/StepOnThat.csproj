@@ -66,6 +66,7 @@
     <Compile Include="Instructions.cs" />
     <Compile Include="InstructionsRunner.cs" />
     <Compile Include="IStepResult.cs" />
+    <Compile Include="JsonTypePropertyConverter.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepResult.cs" />

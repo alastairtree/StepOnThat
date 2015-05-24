@@ -25,7 +25,7 @@ namespace StepOnThat
 
         public static Instructions Read(string JSON)
         {
-            return JsonConvert.DeserializeObject<Instructions>(JSON);
+            return JsonConvert.DeserializeObject<Instructions>(JSON, new JsonTypePropertyConverter<Step>(){ DefaultyValueType = typeof(Step) });
         }
     }
 }

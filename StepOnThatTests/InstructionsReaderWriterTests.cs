@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using StepOnThat.Http;
 
 namespace StepOnThat.Tests
 {
@@ -20,7 +22,7 @@ namespace StepOnThat.Tests
         [TestCase("{steps:[{name:'test'}]}")]
         [TestCase("{steps:[{name:'test', type:'step'}]}")]
         [TestCase("{steps:[{name:'test', type:'Step'}]}")]
-        public void ReadInstructionsFromAJsonString(string json)
+        public void ReadStepInstructionsFromAJsonString(string json)
         {
             var instruction = InstructionsReaderWriter.Read(json);
             var expected = "test";
@@ -28,6 +30,29 @@ namespace StepOnThat.Tests
             Assert.NotNull(instruction.Steps);
             Assert.IsNotEmpty(instruction.Steps);
             Assert.AreEqual(expected, instruction.Steps[0].Name);
+        }
+
+        [TestCase("{steps:[{name:'test', type:'HttpStep'}]}")]
+        [TestCase("{steps:[{name:'test', type:'httpstep'}]}")]
+        public void ReadHttpStepInstructionsFromAJsonString(string json)
+        {
+            var instruction = InstructionsReaderWriter.Read(json);
+            var expected = "test";
+            Assert.NotNull(instruction);
+            Assert.NotNull(instruction.Steps);
+            Assert.IsNotEmpty(instruction.Steps);
+            Assert.AreEqual(expected, instruction.Steps[0].Name);
+        }
+
+        [TestCase("{steps:[{type:'HttpStep'}]}")]
+        [TestCase("{steps:[{name:'test', type:'HttpStep'}]}")]
+        [TestCase("{steps:[{name:'test', type:'httpstep'}]}")]
+        [TestCase("{steps:[{name:'test', type:'httpstep' url:'http://www.example.com'}]}")]
+        public void ReadingHttpStepReturnsTheCorrectType(string json)
+        {
+            var instruction = InstructionsReaderWriter.Read(json);
+            var expected = "HttpStep";
+            Assert.AreEqual(expected, instruction.Steps[0].Type);
         }
 
         [Test]
@@ -40,6 +65,25 @@ namespace StepOnThat.Tests
             Assert.IsEmpty(instruction.Steps);
         }
 
+        [Test]
+        public void ManyDifferentTypesOfStepAreReadInTheCorrectOrderAndWithCorrectTypes()
+        {
+            var json = @"{
+                steps:[
+                    {name:1},
+                    {name:2,   type:'httpStep'},
+                    {name:3,   type:'httpStep', url:'http://example.com'},
+                    {name:'4', type:'step'}
+                ]
+            }";
+            var instruction = InstructionsReaderWriter.Read(json);
+            Assert.AreEqual("1", instruction.Steps[0].Name);
+            Assert.AreEqual("2", instruction.Steps[1].Name);
+            Assert.AreEqual(typeof(HttpStep), instruction.Steps[1].GetType());
+            Assert.AreEqual("3", instruction.Steps[2].Name);
+            Assert.AreEqual(typeof(HttpStep), instruction.Steps[2].GetType());
+            Assert.AreEqual("4", instruction.Steps[3].Name);
+        }
 
         [Test]
         public void EmptyInstructionsFromAnEmptyPairOfBraces()
@@ -48,6 +92,14 @@ namespace StepOnThat.Tests
             var instruction = InstructionsReaderWriter.Read(json);
             Assert.NotNull(instruction);
             Assert.NotNull(instruction.Steps);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ApplicationException))]
+        public void UnknownStepTypeFailsToDeserialise()
+        {
+            var json = "{steps:[{type:'someUnknownType'}]}";
+            var instruction = InstructionsReaderWriter.Read(json);
         }
 
         [Test]
