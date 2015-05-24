@@ -18,6 +18,7 @@ namespace StepOnThat.Http
         {}
 
         public string Url { get; set; }
+
         public string Method { get; set; }
 
         public override async Task<IStepResult> RunAsync()
