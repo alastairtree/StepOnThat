@@ -26,7 +26,7 @@ namespace StepOnThat.Console.Tests
         public void RunConsoleAppForASingleNoOpStep()
         {
             string path = Path.GetTempFileName();
-            const string instruction = @"{ steps : [{ type: 'test', name: 'test' }] }";
+            const string instruction = @"{ steps : [{ type: 'Step', name: 'test' }] }";
 
             File.WriteAllText(path, instruction);
 
@@ -42,7 +42,7 @@ namespace StepOnThat.Console.Tests
         public void RunConsoleAppForAbadFilePath()
         {
             string path = Path.GetTempFileName();
-            const string instruction = @"{ steps : [{ type: 'test', name: 'test' }] }";
+            const string instruction = @"{ steps : [{ type: 'step', name: 'test' }] }";
 
             File.WriteAllText(path, instruction);
 

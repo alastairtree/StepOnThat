@@ -1,11 +1,14 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace StepOnThat
 {
     public class Step
     {
-        public string Type { get; set; }
+        public string Type
+        {
+            get { return GetType().Name; }
+        }
+
         public string Name { get; set; }
 
         public override bool Equals(object obj)
@@ -13,23 +16,11 @@ namespace StepOnThat
             var val = obj as Step;
             if (val == null) return false;
 
-            return Type == val.Type;
+            return Type == val.Type &&
+                   Name == val.Name;
         }
 
-        public async Task<IStepResult> RunAsync()
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            IStepResult result = await RunAsyncCore();
-
-            stopwatch.Stop();
-            result.Duration = stopwatch.Elapsed;
-
-            return result;
-        }
-
-        protected virtual async Task<IStepResult> RunAsyncCore()
+        public virtual async Task<IStepResult> RunAsync()
         {
             return await Task.Run(() => StepResult.Succeeded());
         }

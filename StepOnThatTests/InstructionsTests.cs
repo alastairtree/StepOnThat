@@ -7,6 +7,15 @@ namespace StepOnThat.Tests
     public class InstructionsTests
     {
         [Test]
+        public void DifferentInstructionsDifferentHashCode()
+        {
+            Assert.AreNotEqual(
+                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
+                new Instructions(new[] {new Step {Name = "test2"}}).GetHashCode()
+                );
+        }
+
+        [Test]
         public void DumbEmptyInstructionsAreEqual()
         {
             var actual = new Instructions(new List<Step>());
@@ -15,14 +24,12 @@ namespace StepOnThat.Tests
         }
 
         [Test]
-        public void GetHashCodeTest()
+        public void SameInstructionsSameHashCode()
         {
-            Assert.AreEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
-                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode());
-            Assert.AreNotEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
-                new Instructions(new[] {new Step {Name = "test2"}}).GetHashCode());
-            Assert.AreNotEqual(new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
-                new Instructions(new[] {new Step {Type = "test"}}).GetHashCode());
+            Assert.AreEqual(
+                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode(),
+                new Instructions(new[] {new Step {Name = "test"}}).GetHashCode()
+                );
         }
     }
 }

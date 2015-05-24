@@ -14,11 +14,10 @@ namespace StepOnThat.Tests
             {
                 new Instructions()
                 , new Instructions(new List<Step>())
-                , new Instructions(new List<Step> {new Step {Name = "test", Type = "Test"}})
+                , new Instructions(new List<Step> {new Step {Name = "test"}})
             };
 
-            var runner = new InstructionsRunner();
-
+            var runner = new InstructionsRunner(new StepRunner());
 
             foreach (Instructions instruction in instructions)
             {
