@@ -1,11 +1,14 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace StepOnThat
 {
     public class Step
     {
-        public string Type { get { return this.GetType().Name; } }
+        public string Type
+        {
+            get { return GetType().Name; }
+        }
+
         public string Name { get; set; }
 
         public override bool Equals(object obj)
@@ -13,8 +16,8 @@ namespace StepOnThat
             var val = obj as Step;
             if (val == null) return false;
 
-            return  Type == val.Type &&
-                    Name == val.Name;
+            return Type == val.Type &&
+                   Name == val.Name;
         }
 
         public virtual async Task<IStepResult> RunAsync()
@@ -29,7 +32,7 @@ namespace StepOnThat
                 Type,
                 Name
             }
-            .GetHashCode();
+                .GetHashCode();
         }
     }
 }

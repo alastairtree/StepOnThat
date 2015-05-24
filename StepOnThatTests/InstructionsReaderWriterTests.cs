@@ -17,20 +17,17 @@ namespace StepOnThat.Tests
             File.Delete(path);
         }
 
-        [Test]
-        public void WriteFileThenReadAndCheckItIsEqual()
+        [TestCase("{steps:[{name:'test'}]}")]
+        [TestCase("{steps:[{name:'test', type:'step'}]}")]
+        [TestCase("{steps:[{name:'test', type:'Step'}]}")]
+        public void ReadInstructionsFromAJsonString(string json)
         {
-            var instructions = new[]
-            {
-                new Instructions()
-                , new Instructions(new List<Step>())
-                , new Instructions(new List<Step> {new Step { Name = "test" }})
-            };
-
-            foreach (Instructions instruction in instructions)
-            {
-                WriteAndTheReadInstructions(instruction);
-            }
+            var instruction = InstructionsReaderWriter.Read(json);
+            var expected = "test";
+            Assert.NotNull(instruction);
+            Assert.NotNull(instruction.Steps);
+            Assert.IsNotEmpty(instruction.Steps);
+            Assert.AreEqual(expected, instruction.Steps[0].Name);
         }
 
         [Test]
@@ -43,15 +40,6 @@ namespace StepOnThat.Tests
             Assert.IsEmpty(instruction.Steps);
         }
 
-        [Test]
-        public void SingleEmptyStepIsNotNull()
-        {
-            var json = "{steps:[{}]}";
-            var instruction = InstructionsReaderWriter.Read(json);
-            Assert.IsNotEmpty(instruction.Steps);
-            Assert.NotNull(instruction.Steps.Single());
-        }
-
 
         [Test]
         public void EmptyInstructionsFromAnEmptyPairOfBraces()
@@ -62,17 +50,29 @@ namespace StepOnThat.Tests
             Assert.NotNull(instruction.Steps);
         }
 
-        [TestCase("{steps:[{name:'test'}]}")]
-        [TestCase("{steps:[{name:'test', type:'step'}]}")]
-        [TestCase("{steps:[{name:'test', type:'Step'}]}")]
-        public void ReadInstructionsFromAJsonString(string json)
+        [Test]
+        public void SingleEmptyStepIsNotNull()
         {
+            var json = "{steps:[{}]}";
             var instruction = InstructionsReaderWriter.Read(json);
-            var expected = "test";
-            Assert.NotNull(instruction);
-            Assert.NotNull(instruction.Steps);
             Assert.IsNotEmpty(instruction.Steps);
-            Assert.AreEqual(expected, instruction.Steps[0].Name);
+            Assert.NotNull(instruction.Steps.Single());
+        }
+
+        [Test]
+        public void WriteFileThenReadAndCheckItIsEqual()
+        {
+            var instructions = new[]
+            {
+                new Instructions()
+                , new Instructions(new List<Step>())
+                , new Instructions(new List<Step> {new Step {Name = "test"}})
+            };
+
+            foreach (Instructions instruction in instructions)
+            {
+                WriteAndTheReadInstructions(instruction);
+            }
         }
     }
 }

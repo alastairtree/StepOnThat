@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
 
 namespace StepOnThat.Http
 {
@@ -20,6 +15,9 @@ namespace StepOnThat.Http
             }
         }
 
+        public HttpRequestMessage Request { get; private set; }
+        public HttpResponseMessage Response { get; private set; }
+
         public string Data
         {
             get
@@ -32,18 +30,12 @@ namespace StepOnThat.Http
 
         public override bool Success
         {
-            get
-            {
-                return Response != null && Response.IsSuccessStatusCode;
-            }
+            get { return Response != null && Response.IsSuccessStatusCode; }
         }
-
-        public HttpRequestMessage Request { get; private set; }
-        public HttpResponseMessage Response { get; private set; }
 
         public static HttpStepResult Create(HttpRequestMessage request, HttpResponseMessage response)
         {
-            return new HttpStepResult() { Request = request, Response = response };
+            return new HttpStepResult {Request = request, Response = response};
         }
     }
 }

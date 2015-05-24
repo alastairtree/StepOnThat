@@ -15,7 +15,8 @@ namespace StepOnThat.Http
         }
 
         public HttpStep() : this(new HttpClient())
-        {}
+        {
+        }
 
         public string Url { get; set; }
 

@@ -7,7 +7,7 @@ namespace StepOnThat
 {
     public class Program
     {
-        static InstructionsRunner runner = new InstructionsRunner(new StepRunner());
+        private static InstructionsRunner runner = new InstructionsRunner(new StepRunner());
 
         public static int Main(string[] args)
         {

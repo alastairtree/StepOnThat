@@ -6,7 +6,7 @@ namespace StepOnThat.Http
 {
     public class HttpClient : ISendHttp
     {
-        System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+        private System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
 
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
@@ -19,7 +19,13 @@ namespace StepOnThat.Http
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+
+        private bool disposedValue; // To detect redundant calls
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -35,10 +41,6 @@ namespace StepOnThat.Http
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
         #endregion
     }
 }

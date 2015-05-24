@@ -1,19 +1,19 @@
-﻿using NUnit.Framework;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace StepOnThat.Tests
 {
-    public class StepTestsBase<TStep> where TStep :  Step, new()
+    public class StepTestsBase<TStep> where TStep : Step, new()
     {
         protected virtual TStep GetStepForTesting(string name = "testName")
         {
-            return new TStep { Name = name };
+            return new TStep {Name = name};
         }
 
         [Test]
         public void DifferentNameDifferentHashCode()
         {
-            Assert.AreNotEqual(GetStepForTesting().GetHashCode(), GetStepForTesting(name: "test2").GetHashCode());
+            Assert.AreNotEqual(GetStepForTesting().GetHashCode(), GetStepForTesting("test2").GetHashCode());
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace StepOnThat.Tests
         public void SimpleStepsAreNotEqualByName()
         {
             var expected = GetStepForTesting();
-            var actual = GetStepForTesting(name: "test2");
+            var actual = GetStepForTesting("test2");
             Assert.AreNotEqual(expected, actual);
         }
 
@@ -58,7 +58,7 @@ namespace StepOnThat.Tests
         public void TypeIsEqualToClassName()
         {
             var actual = GetStepForTesting().Type;
-            var expected = typeof(TStep).Name;
+            var expected = typeof (TStep).Name;
             Assert.AreEqual(expected, actual);
         }
     }
