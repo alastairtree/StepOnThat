@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -10,11 +11,13 @@ namespace StepOnThat
     public class JsonTypePropertyConverter<TType> : CustomCreationConverter<TType>
     {
         private readonly string typePropertyName;
+        private Func<string, string> applyIgnorePatternToTypeName;
 
-        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type")
+        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type", string ignorePatternInTypeName = null)
         {
             this.typePropertyName = typePropertyName;
             DefaultyValueType = defaultyValueType;
+            applyIgnorePatternToTypeName = x => ignorePatternInTypeName.IsNullOrEmpty() ? x : Regex.Replace(x, ignorePatternInTypeName, "");
         }
 
         public Type DefaultyValueType { get; set; }
@@ -27,6 +30,9 @@ namespace StepOnThat
         private TType Create(JObject jObject)
         {
             var typeName = (string) jObject.Property(typePropertyName);
+
+            if(typeName!=null)
+                typeName = applyIgnorePatternToTypeName(typeName);
 
             if (String.IsNullOrEmpty(typeName))
                 typeName = DefaultyValueType == null ? "" : DefaultyValueType.Name;
@@ -64,11 +70,12 @@ namespace StepOnThat
             StringComparer opts = (ignoreCase
                 ? StringComparer.InvariantCultureIgnoreCase
                 : StringComparer.InvariantCulture);
-            return AppDomain.CurrentDomain
+
+            return  AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(type => typeof (T).IsAssignableFrom(type))
-                .ToDictionary(type => type.Name, type => type, opts);
+                .ToDictionary(type => applyIgnorePatternToTypeName(type.Name), type => type, opts);
         }
     }
 }

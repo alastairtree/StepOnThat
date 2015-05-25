@@ -25,6 +25,7 @@ namespace StepOnThat.Tests
         [TestCase("{steps:[{name:'test'}]}")]
         [TestCase("{steps:[{name:'test', type:'step'}]}")]
         [TestCase("{steps:[{name:'test', type:'Step'}]}")]
+        [TestCase("{steps:[{name:'test', type:'browser'}]}")]
         public void ReadStepInstructionsFromAJsonString(string json)
         {
             var instruction = InstructionsReaderWriter.Read(json);
@@ -35,6 +36,7 @@ namespace StepOnThat.Tests
             Assert.AreEqual(expected, instruction.Steps[0].Name);
         }
 
+        [TestCase("{steps:[{name:'test', type:'Http'}]}")]
         [TestCase("{steps:[{name:'test', type:'HttpStep'}]}")]
         [TestCase("{steps:[{name:'test', type:'httpstep'}]}")]
         public void ReadHttpStepInstructionsFromAJsonString(string json)

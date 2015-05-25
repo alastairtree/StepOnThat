@@ -17,7 +17,7 @@ Where instructions.json looks like this:
     {
         "steps": [
             {
-                "type": "BrowserStep",
+                "type": "Browser",
                 "url": "http://www.google.com",
                 "steps": [
                     { "action": "set", "target": "input[title=Search]", "value": "hello world" },

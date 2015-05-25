@@ -9,7 +9,7 @@ namespace StepOnThat
     {
         private static readonly JsonConverter[] Converters =
         {
-            new JsonTypePropertyConverter<Step>(typeof (Step)),
+            new JsonTypePropertyConverter<Step>(typeof (Step), ignorePatternInTypeName:@"(?<=\w)[sS]tep$"),
             new JsonTypePropertyConverter<BrowserAction>(typePropertyName: "action")
         };
 
