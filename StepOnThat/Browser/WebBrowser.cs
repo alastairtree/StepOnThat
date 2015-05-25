@@ -5,47 +5,55 @@ using OpenQA.Selenium.Support.UI;
 
 namespace StepOnThat.Browser
 {
-    public class Browser
+    public class WebBrowser : IWebBrowser
     {
-        private static Browser currentBrowser;
+        private static WebBrowser currentWebBrowser;
 
-        public static int DefaultWaitInSeconds = 5;
+        private static int defaultWaitInSeconds = 5;
 
         private IWebDriver driver;
+        private Func<IWebDriver> driverFactory;
 
         /// <summary>
-        /// Defaults to Chrome
+        ///     Defaults to Chrome
         /// </summary>
-        public Browser() 
-            : this(new ChromeDriver(new ChromeOptions()))
+        public WebBrowser()
+            : this(() => new ChromeDriver(new ChromeOptions()))
         {
-            Driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(DefaultWaitInSeconds));
         }
 
-        public Browser(IWebDriver driver)
+        public WebBrowser(Func<IWebDriver> driverFactory)
         {
-            this.Driver = driver;
+            this.driverFactory = driverFactory;
         }
 
         /// <summary>
         /// Get the current (or a new) browser. Chrome by default.
         /// </summary>
-        public static Browser Current
+        public static WebBrowser Current
         {
-            get { return currentBrowser ?? (currentBrowser = new Browser()); }
+            get { return currentWebBrowser ?? (currentWebBrowser = new WebBrowser()); }
             set
             {
-                if (currentBrowser != null)
+                if (currentWebBrowser != null)
                 {
-                    currentBrowser.Close();
+                    currentWebBrowser.Close();
                 }
-                currentBrowser = value;
+                currentWebBrowser = value;
             }
         }
 
         public IWebDriver Driver
         {
-            get { return driver; }
+            get
+            {
+                if (driver == null)
+                {
+                    driver = driverFactory();
+                    Driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(defaultWaitInSeconds));
+                }
+                return driver;
+            }
             set
             {
                 Close(); //clean up before swapping driver
@@ -53,27 +61,33 @@ namespace StepOnThat.Browser
             }
         }
 
-        public Browser GoTo(string url)
+        public static int DefaultWaitInSeconds
+        {
+            get { return defaultWaitInSeconds; }
+            set { defaultWaitInSeconds = value; }
+        }
+
+        public WebBrowser GoTo(string url)
         {
             Driver.Navigate().GoToUrl(url);
             return this;
         }
 
-        public Browser Back()
+        public WebBrowser Back()
         {
             Driver.Navigate().Back();
             return this;
         }
 
-        public Browser Forward()
+        public WebBrowser Forward()
         {
             Driver.Navigate().Forward();
             return this;
         }
 
-        public Browser Click(string cssOrXpathSelector)
+        public WebBrowser Click(string cssOrXpathSelector)
         {
-            var elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
+            IWebElement elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
 
             elem.Click();
             return this;
@@ -87,9 +101,9 @@ namespace StepOnThat.Browser
             return By.CssSelector(cssOrXpathSelector);
         }
 
-        public Browser Set(string cssOrXpathSelector, string value)
+        public WebBrowser Set(string cssOrXpathSelector, string value)
         {
-            var elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
+            IWebElement elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
 
             elem.SendKeys(value);
             return this;
@@ -97,7 +111,7 @@ namespace StepOnThat.Browser
 
         public string Get(string cssOrXpathSelector)
         {
-            var elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
+            IWebElement elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
 
             if (elem.TagName.ToLowerInvariant() == "input" && elem.GetAttribute("type") == "text")
                 return elem.GetAttribute("value");
@@ -113,16 +127,16 @@ namespace StepOnThat.Browser
             return Driver.Title;
         }
 
-        public Browser WaitFor(string cssOrXpathSelector)
+        public WebBrowser WaitFor(string cssOrXpathSelector)
         {
-            WaitFor(cssOrXpathSelector, DefaultWaitInSeconds);
+            WaitFor(cssOrXpathSelector, defaultWaitInSeconds);
             return this;
         }
 
-        public Browser WaitFor(string cssOrXpathSelector, int seconds)
+        public WebBrowser WaitFor(string cssOrXpathSelector, int seconds)
         {
             var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds));
-            var elem = wait.Until(d => d.FindElement(GetSelector(cssOrXpathSelector)));
+            IWebElement elem = wait.Until(d => d.FindElement(GetSelector(cssOrXpathSelector)));
             return this;
         }
 
@@ -135,6 +149,5 @@ namespace StepOnThat.Browser
                 driver = null;
             }
         }
-
     }
 }

@@ -7,8 +7,16 @@ using Newtonsoft.Json.Linq;
 
 namespace StepOnThat
 {
-    internal class JsonTypePropertyConverter<TType> : CustomCreationConverter<TType> where TType : new()
+    public class JsonTypePropertyConverter<TType> : CustomCreationConverter<TType>
     {
+        private readonly string typePropertyName;
+
+        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type" )
+        {
+            this.typePropertyName = typePropertyName;
+            this.DefaultyValueType = defaultyValueType;
+        }
+
         public Type DefaultyValueType { get; set; }
 
         public override TType Create(Type objectType)
@@ -18,7 +26,7 @@ namespace StepOnThat
 
         private TType Create(JObject jObject)
         {
-            var typeName = (string) jObject.Property("type");
+            var typeName = (string)jObject.Property(typePropertyName);
 
             if (String.IsNullOrEmpty(typeName))
                 typeName = DefaultyValueType == null ? "" : DefaultyValueType.Name;

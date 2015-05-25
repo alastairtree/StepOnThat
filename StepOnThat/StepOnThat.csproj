@@ -64,7 +64,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Browser\Browser.cs" />
+    <Compile Include="Browser\Actions\Back.cs" />
+    <Compile Include="Browser\Actions\BrowserAction.cs" />
+    <Compile Include="Browser\Actions\Click.cs" />
+    <Compile Include="Browser\Actions\Forward.cs" />
+    <Compile Include="Browser\Actions\GoTo.cs" />
+    <Compile Include="Browser\Actions\Interaction.cs" />
+    <Compile Include="Browser\Actions\Set.cs" />
+    <Compile Include="Browser\Actions\WaitFor.cs" />
+    <Compile Include="Browser\BrowserStep.cs" />
+    <Compile Include="Browser\IWebBrowser.cs" />
+    <Compile Include="Browser\WebBrowser.cs" />
     <Compile Include="ExMethods.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Http\HttpStep.cs" />
