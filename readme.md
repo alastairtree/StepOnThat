@@ -56,7 +56,7 @@ or in a more complicated example:
 A big thank you to these OSS projects who made this possible.
 
 - Newstonsoft.JSON to read and write JSON
-- Selenium WebDriver to do Browser autmation
-- Command Line Parser to read ypour inputs
+- Selenium WebDriver to do Browser automation
+- Command Line Parser to read your inputs
 - NUnit and Moq to test it all works
 - HttpClient to make API calls
