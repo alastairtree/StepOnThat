@@ -8,8 +8,14 @@
         WebBrowser Click(string cssOrXpathSelector);
         WebBrowser Set(string cssOrXpathSelector, string value);
         string Get(string cssOrXpathSelector);
+        string GetTitle();
         WebBrowser WaitFor(string cssOrXpathSelector);
         WebBrowser WaitFor(string cssOrXpathSelector, int seconds);
+        WebBrowser Submit();
+        WebBrowser Submit(string cssOrXpathSelector);
+        WebBrowser VerifyElement(string cssOrXPathSelector);
+        WebBrowser VerifyText(string cssOrXPathSelector, string wildcardText);
+        WebBrowser VerifyTitle(string wildcardText);
         void Close();
     }
 }

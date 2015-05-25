@@ -8,59 +8,65 @@ namespace StepOnThat.Browser.Tests
     {
         private string homepageUrl = "http://www.bbc.co.uk";
         private string searchboxCss = "input[type=text][name=q]";
+        private WebBrowser browser;
+
+        [TestFixtureSetUp]
+        public void BeforeAllTests()
+        {
+            browser = new WebBrowser();
+        }
 
         [TestFixtureTearDown]
         public void AfterAlltests()
         {
-            WebBrowser.Current.Close();
+            browser.Close();
+            browser = null;
         }
 
         [Test]
         public void BackAndForwardTest()
         {
-            WebBrowser.Current
+            browser
                 .GoTo(homepageUrl)
                 .Click("a:link")
                 .Back()
                 .Forward();
-            Assert.IsTrue(WebBrowser.Current.Title().Contains("BBC"));
+            Assert.IsTrue(browser.GetTitle().Contains("BBC"));
         }
 
         [Test]
         public void ClickAndWaitTest()
         {
-            WebBrowser.Current
+            browser
                 .GoTo(homepageUrl)
                 .Click("a:link")
                 .WaitFor("img");
-            Assert.IsTrue(WebBrowser.Current.Title().Contains("BBC"));
+            Assert.IsTrue(browser.GetTitle().Contains("BBC"));
         }
 
 
         [Test]
         public void ClickUsingXPathTest()
         {
-            WebBrowser.Current
+            browser
                 .GoTo(homepageUrl)
                 .Click("//*[@id='orb-nav-links']/ul/li[1]/a");
 
-            Assert.IsTrue(WebBrowser.Current.Title().Contains("BBC News"));
+            Assert.IsTrue(browser.GetTitle().Contains("BBC News"));
         }
 
         [Test]
         public void DoAndSubmitASearchTest()
         {
-            var browser = WebBrowser.Current;
             browser.GoTo(homepageUrl);
             browser.Set(searchboxCss, "news");
             browser.Click(searchboxCss + " + input");
-            Assert.IsTrue(browser.Title().Contains("news"));
+            Assert.IsTrue(browser.GetTitle().Contains("news"));
         }
 
         [Test]
         public void GetInputTest()
         {
-            var browser = WebBrowser.Current;
             browser.GoTo(homepageUrl);
             browser.Set(searchboxCss, "news");
             var text = browser.Get(searchboxCss);
@@ -70,7 +76,6 @@ namespace StepOnThat.Browser.Tests
         [Test]
         public void GetTest()
         {
-            var browser = WebBrowser.Current;
             var text = browser
                 .GoTo(homepageUrl)
                 .Get("nav a");
@@ -80,9 +85,18 @@ namespace StepOnThat.Browser.Tests
         [Test]
         public void GoToTest()
         {
-            var browser = WebBrowser.Current;
             browser.GoTo(homepageUrl);
-            Assert.IsTrue(browser.Title().Contains("BBC"));
+            Assert.IsTrue(browser.GetTitle().Contains("BBC"));
+        }
+
+        [Test]
+        public void SubmitAndVerifyTest()
+        {
+            browser.GoTo("http://www.google.co.uk")
+                .Set("input[name='q']", "hello world")
+                .Submit()
+                .WaitFor("div[role=main] a:link")
+                .VerifyTitle("hello world*");
         }
     }
 }
