@@ -95,20 +95,27 @@ namespace StepOnThat.Tests
         [Category("WebBrowser")]
         public async Task ComplexBrowserActionsDeserialiseAndRun()
         {
-            var json = @"{
+            var json = @"
+            {
                 'steps': [
                     {
-                        'type': 'BrowserStep',
-                        'url': 'http://www.google.com',
-                        'steps': [
-                            { 'action': 'set', 'target': 'input[title=Search]', 'value': 'hello world' },
-                            { 'action': 'submit' },
-                            { 'action': 'title', 'match': 'hello world*' },
-                            { 'action': 'click', 'target': 'div[role=main] a:link' },
-                            { 'action': 'waitfor', 'target': '.thumb img' },
-                            { 'action': 'address', 'match': '*.wikipedia.*' },
+                        type: 'Browser',
+                        url: 'http://www.google.com',
+                        steps: [
+                            { action: 'set', target: 'input[title=Search]', value: 'hello world' },
+                            { action: 'submit' },
+                            { action: 'title', match: 'hello world*' },
+                            { action: 'click', target: 'div[role=main] a:link' },
+                            { action: 'waitfor', target: '.thumb img' },
+                            { action: 'address', match: '*.wikipedia.*' },
                         ]
         
+                    },
+                    {
+                        type: 'Http', 
+                        url: 'http://requestb.in/vzw90wvz', 
+                        method: 'post', 
+                        data : '{message:\""hello APIs\""}'
                     }
                 ]
             }";

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace StepOnThat.Http
@@ -14,13 +16,18 @@ namespace StepOnThat.Http
             this.http = http;
         }
 
-        public HttpStep() : this(new HttpClient())
+        public HttpStep()
+            : this(new HttpClient())
         {
         }
 
         public string Url { get; set; }
 
         public string Method { get; set; }
+
+        public string Data { get; set; }
+
+        public string ContentType { get; set; }
 
         public override async Task<IStepResult> RunAsync()
         {
@@ -30,9 +37,26 @@ namespace StepOnThat.Http
             var httpMethod = GetMethod();
             var message = new HttpRequestMessage(httpMethod, Url);
 
+            AddMessageAnyContent(message);
+
             var response = await http.SendAsync(message);
 
             return HttpStepResult.Create(message, response);
+        }
+
+        private void AddMessageAnyContent(HttpRequestMessage message)
+        {
+            if (!string.IsNullOrEmpty(Data))
+            {
+                if (!string.IsNullOrEmpty(ContentType))
+                    message.Content = new StringContent(Data, Encoding.UTF8, ContentType);
+                else if (Regex.IsMatch(Data, @"\{.+:.+\}"))
+                    message.Content = new StringContent(Data, Encoding.UTF8, "application/json");
+                else if (Regex.IsMatch(Data, @"\<.+/.*\>"))
+                    message.Content = new StringContent(Data, Encoding.UTF8, "application/xml");
+                else
+                    message.Content = new StringContent(Data);
+            }
         }
 
         private HttpMethod GetMethod()
