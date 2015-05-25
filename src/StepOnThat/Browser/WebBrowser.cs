@@ -202,19 +202,25 @@ namespace StepOnThat.Browser
 
             if (!Regex.IsMatch(elementText, WildcardToRegex((wildcardText))))
                 throw new ApplicationException(
-                    string.Format("Found element using selector '{0}' but text '{1}' does not match wildwcard '{2}'",
+                    string.Format("Found element using selector '{0}' but text '{1}' does not match wildcard '{2}'",
                         cssOrXPathSelector, elementText, wildcardText));
 
             return this;
         }
 
-        public WebBrowser VerifyTitle(string wildcardText)
+        public WebBrowser VerifyTitle(string wildcardText, int? seconds = null)
         {
-            var elementText = Driver.Title;
+            var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds ?? defaultWaitInSeconds));
 
-            if (!Regex.IsMatch(elementText, WildcardToRegex((wildcardText))))
-                throw new ApplicationException(string.Format("Title '{0}' does not match wildwcard '{1}'.", elementText,
-                    wildcardText));
+            try
+            {
+                wait.Until(d => Regex.IsMatch(d.Title, WildcardToRegex(wildcardText)));
+            }
+            catch (WebDriverTimeoutException)
+            {
+
+                throw new ApplicationException(string.Format("Could not match title to wildcard '{0}'", wildcardText));
+            }
 
             return this;
         }

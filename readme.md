@@ -17,13 +17,14 @@ Where instructions.json looks like this:
     {
         "steps": [
             {
-                "type": "Browser",
+                "type": "BrowserStep",
                 "url": "http://www.google.com",
                 "steps": [
                     { "action": "set", "target": "input[title=Search]", "value": "hello world" },
-                    { "action": "click", "target": "input[type=text]" },
+                    { "action": "submit" },
+                    { "action": "title", "match": "hello world*" },
                     { "action": "click", "target": "div[role=main] a:link" },
-                    { "action": "waitfor", "target": "img" }
+                    { "action": "waitfor", "target": ".thumb img" }
                 ]
             }
         ]
