@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using StepOnThat.Browser.Actions;
 
@@ -32,6 +33,9 @@ namespace StepOnThat
 
         public static Instructions Read(string JSON)
         {
+            if (Regex.IsMatch(JSON, @"^\s*\[.*\]\s*$", RegexOptions.Singleline))
+                JSON = string.Format("{{'steps':{0}}}", JSON);
+
             return JsonConvert.DeserializeObject<Instructions>(JSON, Converters);
         }
     }

@@ -21,6 +21,7 @@ namespace StepOnThat.Tests
             File.Delete(path);
         }
 
+        [TestCase("[{name:'test'}]")]
         [TestCase("{steps:[{name:'test'}]}")]
         [TestCase("{steps:[{name:'test', type:'step'}]}")]
         [TestCase("{steps:[{name:'test', type:'Step'}]}")]
