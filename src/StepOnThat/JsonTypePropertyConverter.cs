@@ -13,11 +13,13 @@ namespace StepOnThat
         private readonly string typePropertyName;
         private Func<string, string> applyIgnorePatternToTypeName;
 
-        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type", string ignorePatternInTypeName = null)
+        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type",
+            string ignorePatternInTypeName = null)
         {
             this.typePropertyName = typePropertyName;
             DefaultyValueType = defaultyValueType;
-            applyIgnorePatternToTypeName = x => ignorePatternInTypeName.IsNullOrEmpty() ? x : Regex.Replace(x, ignorePatternInTypeName, "");
+            applyIgnorePatternToTypeName =
+                x => ignorePatternInTypeName.IsNullOrEmpty() ? x : Regex.Replace(x, ignorePatternInTypeName, "");
         }
 
         public Type DefaultyValueType { get; set; }
@@ -31,7 +33,7 @@ namespace StepOnThat
         {
             var typeName = (string) jObject.Property(typePropertyName);
 
-            if(typeName!=null)
+            if (typeName != null)
                 typeName = applyIgnorePatternToTypeName(typeName);
 
             if (String.IsNullOrEmpty(typeName))
@@ -71,7 +73,7 @@ namespace StepOnThat
                 ? StringComparer.InvariantCultureIgnoreCase
                 : StringComparer.InvariantCulture);
 
-            return  AppDomain.CurrentDomain
+            return AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(type => typeof (T).IsAssignableFrom(type))

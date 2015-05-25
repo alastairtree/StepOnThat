@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using StepOnThat.Browser.Actions;
 using StepOnThat.Http;
@@ -88,6 +89,45 @@ namespace StepOnThat.Tests
             var action2 = (Click) browserStep.Steps.Last();
             Assert.AreEqual("a:link", action2.Target);
         }
+
+
+        [Test]
+        [Category("WebBrowser")]
+        public async Task ComplexBrowserActionsDeserialiseAndRun()
+        {
+            var json = @"
+            {
+                'steps': [
+                    {
+                        type: 'Browser',
+                        url: 'http://www.google.com',
+                        steps: [
+                            { action: 'set', target: 'input[title=Search]', value: 'hello world' },
+                            { action: 'submit' },
+                            { action: 'title', match: 'hello world*' },
+                            { action: 'click', target: 'div[role=main] a:link' },
+                            { action: 'waitfor', target: '.thumb img' },
+                            { action: 'address', match: '*.wikipedia.*' },
+                        ]
+        
+                    },
+                    {
+                        type: 'Http', 
+                        url: 'http://requestb.in/vzw90wvz', 
+                        method: 'post', 
+                        data : '{message:\""hello APIs\""}'
+                    }
+                ]
+            }";
+            var instruction = InstructionsReaderWriter.Read(json);
+            Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
+
+            var browserStep = (BrowserStep) instruction.Steps[0];
+            Assert.AreEqual(6, browserStep.Steps.Count);
+
+            await new InstructionsRunner(new StepRunner()).Run(instruction);
+        }
+        
 
         [Test]
         public void EmptyInstructionsFromAJsonString()
