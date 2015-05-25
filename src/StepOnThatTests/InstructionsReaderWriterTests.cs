@@ -105,7 +105,8 @@ namespace StepOnThat.Tests
                             { 'action': 'submit' },
                             { 'action': 'title', 'match': 'hello world*' },
                             { 'action': 'click', 'target': 'div[role=main] a:link' },
-                            { 'action': 'waitfor', 'target': '.thumb img' }
+                            { 'action': 'waitfor', 'target': '.thumb img' },
+                            { 'action': 'address', 'match': '*.wikipedia.*' },
                         ]
         
                     }
@@ -115,7 +116,7 @@ namespace StepOnThat.Tests
             Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
 
             var browserStep = (BrowserStep) instruction.Steps[0];
-            Assert.AreEqual(5, browserStep.Steps.Count);
+            Assert.AreEqual(6, browserStep.Steps.Count);
 
             await new InstructionsRunner(new StepRunner()).Run(instruction);
         }

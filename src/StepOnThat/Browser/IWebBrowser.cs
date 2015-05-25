@@ -15,7 +15,8 @@
         WebBrowser Submit(string cssOrXpathSelector);
         WebBrowser VerifyElement(string cssOrXPathSelector);
         WebBrowser VerifyText(string cssOrXPathSelector, string wildcardText);
-        WebBrowser VerifyTitle(string wildcardText, int? seconds = null);
+        WebBrowser VerifyTitle(string titleWildcard, int? seconds = null);
+        WebBrowser VerifyUrl(string urlWildcard, int? seconds = null);
         void Close();
     }
 }

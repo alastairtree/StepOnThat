@@ -67,6 +67,7 @@
     <Compile Include="Browser\Actions\Back.cs" />
     <Compile Include="Browser\Actions\BrowserAction.cs" />
     <Compile Include="Browser\Actions\IMatch.cs" />
+    <Compile Include="Browser\Actions\Address.cs" />
     <Compile Include="Browser\Actions\Title.cs" />
     <Compile Include="Browser\Actions\Verifyy.cs" />
     <Compile Include="Browser\Actions\Submit.cs" />

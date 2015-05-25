@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -133,6 +134,23 @@ namespace StepOnThat.Browser
             return this;
         }
 
+        public WebBrowser VerifyUrl(string urlWildcard, int? seconds = null)
+        {
+            var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds ?? defaultWaitInSeconds));
+            var lastUrl = "";
+            try
+            {
+                wait.Until(d => Regex.IsMatch((lastUrl = d.Url), WildcardToRegex(urlWildcard)));
+            }
+            catch (WebDriverTimeoutException)
+            {
+
+                throw new ApplicationException(string.Format("Could not match url '{0}' to wildcard '{1}'", lastUrl, urlWildcard));
+            }
+
+            return this;
+        }
+
         public void Close()
         {
             if (driver != null)
@@ -208,18 +226,18 @@ namespace StepOnThat.Browser
             return this;
         }
 
-        public WebBrowser VerifyTitle(string wildcardText, int? seconds = null)
+        public WebBrowser VerifyTitle(string titleWildcard, int? seconds = null)
         {
             var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds ?? defaultWaitInSeconds));
-
+            var lastTitle = "";
             try
             {
-                wait.Until(d => Regex.IsMatch(d.Title, WildcardToRegex(wildcardText)));
+                wait.Until(d => Regex.IsMatch((lastTitle = d.Title), WildcardToRegex(titleWildcard)));
             }
             catch (WebDriverTimeoutException)
             {
 
-                throw new ApplicationException(string.Format("Could not match title to wildcard '{0}'", wildcardText));
+                throw new ApplicationException(string.Format("Could not match title '{0}' to wildcard '{1}'", lastTitle, titleWildcard));
             }
 
             return this;

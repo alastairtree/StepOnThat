@@ -30,7 +30,9 @@ namespace StepOnThat.Browser.Tests
                 .GoTo(homepageUrl)
                 .Click("a:link")
                 .Back()
-                .Forward();
+                .Forward()
+                .VerifyTitle("*BBC*");
+
             Assert.IsTrue(browser.GetTitle().Contains("BBC"));
         }
 
@@ -40,7 +42,8 @@ namespace StepOnThat.Browser.Tests
             browser
                 .GoTo(homepageUrl)
                 .Click("a:link")
-                .WaitFor("img");
+                .WaitFor("img")
+                .VerifyUrl("*bbc.co*");
             Assert.IsTrue(browser.GetTitle().Contains("BBC"));
         }
 
