@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -22,7 +19,7 @@ namespace StepOnThat.Tests.Browser
             var sut = new BrowserStep(browser.Object, testHomepage);
             Assert.AreEqual(testHomepage, sut.Url);
 
-            ICollection<BrowserAction> steps = sut.Steps; 
+            ICollection<BrowserAction> steps = sut.Steps;
             Assert.NotNull(steps);
             Assert.IsEmpty(steps);
         }

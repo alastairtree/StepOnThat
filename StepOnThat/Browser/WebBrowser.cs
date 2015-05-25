@@ -28,7 +28,7 @@ namespace StepOnThat.Browser
         }
 
         /// <summary>
-        /// Get the current (or a new) browser. Chrome by default.
+        ///     Get the current (or a new) browser. Chrome by default.
         /// </summary>
         public static WebBrowser Current
         {
@@ -93,14 +93,6 @@ namespace StepOnThat.Browser
             return this;
         }
 
-        private static By GetSelector(string cssOrXpathSelector)
-        {
-            if (cssOrXpathSelector.Contains("/") || cssOrXpathSelector.Contains("::"))
-                return By.XPath(cssOrXpathSelector);
-
-            return By.CssSelector(cssOrXpathSelector);
-        }
-
         public WebBrowser Set(string cssOrXpathSelector, string value)
         {
             IWebElement elem = Driver.FindElement(GetSelector(cssOrXpathSelector));
@@ -120,11 +112,6 @@ namespace StepOnThat.Browser
                 return elem.GetAttribute("value");
 
             return elem.Text;
-        }
-
-        public string Title()
-        {
-            return Driver.Title;
         }
 
         public WebBrowser WaitFor(string cssOrXpathSelector)
@@ -148,6 +135,19 @@ namespace StepOnThat.Browser
                 driver.Dispose();
                 driver = null;
             }
+        }
+
+        private static By GetSelector(string cssOrXpathSelector)
+        {
+            if (cssOrXpathSelector.Contains("/") || cssOrXpathSelector.Contains("::"))
+                return By.XPath(cssOrXpathSelector);
+
+            return By.CssSelector(cssOrXpathSelector);
+        }
+
+        public string Title()
+        {
+            return Driver.Title;
         }
     }
 }

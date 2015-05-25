@@ -11,10 +11,10 @@ namespace StepOnThat
     {
         private readonly string typePropertyName;
 
-        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type" )
+        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type")
         {
             this.typePropertyName = typePropertyName;
-            this.DefaultyValueType = defaultyValueType;
+            DefaultyValueType = defaultyValueType;
         }
 
         public Type DefaultyValueType { get; set; }
@@ -26,7 +26,7 @@ namespace StepOnThat
 
         private TType Create(JObject jObject)
         {
-            var typeName = (string)jObject.Property(typePropertyName);
+            var typeName = (string) jObject.Property(typePropertyName);
 
             if (String.IsNullOrEmpty(typeName))
                 typeName = DefaultyValueType == null ? "" : DefaultyValueType.Name;

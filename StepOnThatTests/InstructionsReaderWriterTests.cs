@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime;
 using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
 using StepOnThat.Browser.Actions;
 using StepOnThat.Http;
 using StepOnThat.Tests.Browser;
@@ -60,36 +58,6 @@ namespace StepOnThat.Tests
         }
 
         [Test]
-        public void EmptyInstructionsFromAJsonString()
-        {
-            var json = "{steps:[]}";
-            var instruction = InstructionsReaderWriter.Read(json);
-            Assert.NotNull(instruction);
-            Assert.NotNull(instruction.Steps);
-            Assert.IsEmpty(instruction.Steps);
-        }
-
-        [Test]
-        public void ManyDifferentTypesOfStepAreReadInTheCorrectOrderAndWithCorrectTypes()
-        {
-            var json = @"{
-                steps:[
-                    {name:1},
-                    {name:2,   type:'httpStep'},
-                    {name:3,   type:'httpStep', url:'http://example.com'},
-                    {name:'4', type:'step'}
-                ]
-            }";
-            var instruction = InstructionsReaderWriter.Read(json);
-            Assert.AreEqual("1", instruction.Steps[0].Name);
-            Assert.AreEqual("2", instruction.Steps[1].Name);
-            Assert.AreEqual(typeof(HttpStep), instruction.Steps[1].GetType());
-            Assert.AreEqual("3", instruction.Steps[2].Name);
-            Assert.AreEqual(typeof(HttpStep), instruction.Steps[2].GetType());
-            Assert.AreEqual("4", instruction.Steps[3].Name);
-        }
-
-        [Test]
         [Category("WebBrowser")]
         public void BrowserStepWithActionsIsDeserialisedCorrectly()
         {
@@ -106,8 +74,8 @@ namespace StepOnThat.Tests
                 ]
             }";
             var instruction = InstructionsReaderWriter.Read(json);
-            Assert.AreEqual(typeof(BrowserStep), instruction.Steps[0].GetType());
-            
+            Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
+
             var browserStep = (BrowserStep) instruction.Steps[0];
             Assert.AreEqual(2, browserStep.Steps.Count);
 
@@ -116,6 +84,16 @@ namespace StepOnThat.Tests
 
             var action2 = (Click) browserStep.Steps.Last();
             Assert.AreEqual("a:link", action2.Target);
+        }
+
+        [Test]
+        public void EmptyInstructionsFromAJsonString()
+        {
+            var json = "{steps:[]}";
+            var instruction = InstructionsReaderWriter.Read(json);
+            Assert.NotNull(instruction);
+            Assert.NotNull(instruction.Steps);
+            Assert.IsEmpty(instruction.Steps);
         }
 
         [Test]
@@ -128,11 +106,23 @@ namespace StepOnThat.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ApplicationException))]
-        public void UnknownStepTypeFailsToDeserialise()
+        public void ManyDifferentTypesOfStepAreReadInTheCorrectOrderAndWithCorrectTypes()
         {
-            var json = "{steps:[{type:'someUnknownType'}]}";
+            var json = @"{
+                steps:[
+                    {name:1},
+                    {name:2,   type:'httpStep'},
+                    {name:3,   type:'httpStep', url:'http://example.com'},
+                    {name:'4', type:'step'}
+                ]
+            }";
             var instruction = InstructionsReaderWriter.Read(json);
+            Assert.AreEqual("1", instruction.Steps[0].Name);
+            Assert.AreEqual("2", instruction.Steps[1].Name);
+            Assert.AreEqual(typeof (HttpStep), instruction.Steps[1].GetType());
+            Assert.AreEqual("3", instruction.Steps[2].Name);
+            Assert.AreEqual(typeof (HttpStep), instruction.Steps[2].GetType());
+            Assert.AreEqual("4", instruction.Steps[3].Name);
         }
 
         [Test]
@@ -142,6 +132,14 @@ namespace StepOnThat.Tests
             var instruction = InstructionsReaderWriter.Read(json);
             Assert.IsNotEmpty(instruction.Steps);
             Assert.NotNull(instruction.Steps.Single());
+        }
+
+        [Test]
+        [ExpectedException(typeof (ApplicationException))]
+        public void UnknownStepTypeFailsToDeserialise()
+        {
+            var json = "{steps:[{type:'someUnknownType'}]}";
+            var instruction = InstructionsReaderWriter.Read(json);
         }
 
         [Test]

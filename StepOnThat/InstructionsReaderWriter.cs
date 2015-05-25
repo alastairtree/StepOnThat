@@ -6,11 +6,11 @@ namespace StepOnThat
 {
     public static class InstructionsReaderWriter
     {
-        static readonly JsonConverter[] Converters = 
-            {
-                new JsonTypePropertyConverter<Step> (typeof (Step)),
-                new JsonTypePropertyConverter<BrowserAction>(typePropertyName:"action") 
-            };
+        private static readonly JsonConverter[] Converters =
+        {
+            new JsonTypePropertyConverter<Step>(typeof (Step)),
+            new JsonTypePropertyConverter<BrowserAction>(typePropertyName: "action")
+        };
 
         public static string Write(Instructions instructions)
         {
