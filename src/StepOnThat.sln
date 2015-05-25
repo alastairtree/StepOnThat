@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepOnThat.Console", "StepO
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "General", "General", "{040C2E76-CA51-41A8-90D6-DBB202AA3159}"
 	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepOnThat", "StepOnThat\StepOnThat.csproj", "{C427C3DB-4B11-4337-A388-7391862CA88A}"
