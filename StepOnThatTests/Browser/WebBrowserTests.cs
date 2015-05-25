@@ -8,12 +8,22 @@ namespace StepOnThat.Browser.Tests
     {
         private string homepageUrl = "http://www.bbc.co.uk";
         private string searchboxCss = "input[type=text][name=q]";
-        [Test]
-        public void GoToTest()
+
+        [TestFixtureTearDown]
+        public void AfterAlltests()
         {
-            var browser = WebBrowser.Current;
-            browser.GoTo(homepageUrl);
-            Assert.IsTrue(browser.Title().Contains("BBC"));
+            WebBrowser.Current.Close();
+        }
+
+        [Test]
+        public void BackAndForwardTest()
+        {
+            WebBrowser.Current
+                .GoTo(homepageUrl)
+                .Click("a:link")
+                .Back()
+                .Forward();
+            Assert.IsTrue(WebBrowser.Current.Title().Contains("BBC"));
         }
 
         [Test]
@@ -26,7 +36,7 @@ namespace StepOnThat.Browser.Tests
             Assert.IsTrue(WebBrowser.Current.Title().Contains("BBC"));
         }
 
-        
+
         [Test]
         public void ClickUsingXPathTest()
         {
@@ -48,16 +58,6 @@ namespace StepOnThat.Browser.Tests
         }
 
         [Test]
-        public void GetTest()
-        {
-            var browser = WebBrowser.Current;
-            var text = browser
-                .GoTo(homepageUrl)
-                .Get("nav a");
-            Assert.AreEqual("News", text);
-        }
-
-        [Test]
         public void GetInputTest()
         {
             var browser = WebBrowser.Current;
@@ -68,20 +68,21 @@ namespace StepOnThat.Browser.Tests
         }
 
         [Test]
-        public void BackAndForwardTest()
+        public void GetTest()
         {
-            WebBrowser.Current
+            var browser = WebBrowser.Current;
+            var text = browser
                 .GoTo(homepageUrl)
-                .Click("a:link")
-                .Back()
-                .Forward();
-            Assert.IsTrue(WebBrowser.Current.Title().Contains("BBC"));
+                .Get("nav a");
+            Assert.AreEqual("News", text);
         }
 
-        [TestFixtureTearDown]
-        public void AfterAlltests()
+        [Test]
+        public void GoToTest()
         {
-            WebBrowser.Current.Close();
+            var browser = WebBrowser.Current;
+            browser.GoTo(homepageUrl);
+            Assert.IsTrue(browser.Title().Contains("BBC"));
         }
     }
 }
