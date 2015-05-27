@@ -17,9 +17,15 @@ namespace StepOnThat.Infrastructure
         {
             var contract = base.CreateObjectContract(objectType);
 
+            Func<object> resolver = () =>
+            {
+                var item =  container.Resolve(objectType);
+                return item;
+            };
+
             // use Autofac to create types that have been registered with it
             if (container.IsRegistered(objectType))
-                contract.DefaultCreator = () => container.Resolve(objectType);
+                contract.DefaultCreator = resolver;
 
             return contract;
         }

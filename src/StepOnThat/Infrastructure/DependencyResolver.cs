@@ -20,7 +20,8 @@ namespace StepOnThat.Infrastructure
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            builder.RegisterType<Instructions>().AsSelf();
+            builder.RegisterType<Instructions>()
+                .UsingConstructor();
 
             //TODO: Make this be based on an attribute? [UsesVariables] perhaps?
             builder.RegisterAssemblyTypes(assembly)
