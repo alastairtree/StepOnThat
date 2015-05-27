@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using StepOnThat.Browser.Actions;
 using StepOnThat.Http;
+using StepOnThat.Infrastructure;
 using StepOnThat.Tests.Browser;
 
 namespace StepOnThat.Tests
@@ -13,11 +15,21 @@ namespace StepOnThat.Tests
     [TestFixture]
     public class InstructionsReaderWriterTests
     {
-        private static void WriteAndTheReadInstructions(Instructions instructions)
+        private DependencyResolver resolver;
+        private InstructionsReaderWriter readerWriter;
+
+        [SetUp]
+        public void BeforeEachTest()
+        {
+            resolver = new DependencyResolver();
+            readerWriter = new InstructionsReaderWriter(resolver.Container);
+        }
+
+        private void WriteAndThenReadInstructions(Instructions instructions)
         {
             string path = Path.GetTempFileName();
-            InstructionsReaderWriter.WriteFile(instructions, path);
-            Instructions clone = InstructionsReaderWriter.ReadFile(path);
+            readerWriter.WriteFile(instructions, path);
+            Instructions clone = readerWriter.ReadFile(path);
             Assert.AreEqual(instructions, clone);
             File.Delete(path);
         }
@@ -29,7 +41,7 @@ namespace StepOnThat.Tests
         [TestCase("{steps:[{name:'test', type:'browser'}]}")]
         public void ReadStepInstructionsFromAJsonString(string json)
         {
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             var expected = "test";
             Assert.NotNull(instruction);
             Assert.NotNull(instruction.Steps);
@@ -42,7 +54,7 @@ namespace StepOnThat.Tests
         [TestCase("{steps:[{name:'test', type:'httpstep'}]}")]
         public void ReadHttpStepInstructionsFromAJsonString(string json)
         {
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             var expected = "test";
             Assert.NotNull(instruction);
             Assert.NotNull(instruction.Steps);
@@ -56,7 +68,7 @@ namespace StepOnThat.Tests
         [TestCase("{steps:[{name:'test', type:'httpstep', url:'http://www.example.com'}]}")]
         public void ReadingHttpStepReturnsTheCorrectType(string json)
         {
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             var expected = "HttpStep";
             Assert.AreEqual(expected, instruction.Steps[0].Type);
         }
@@ -77,7 +89,7 @@ namespace StepOnThat.Tests
                     },
                 ]
             }";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
 
             var browserStep = (BrowserStep) instruction.Steps[0];
@@ -119,7 +131,7 @@ namespace StepOnThat.Tests
                     }
                 ]
             }";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
 
             var browserStep = (BrowserStep) instruction.Steps[0];
@@ -133,7 +145,7 @@ namespace StepOnThat.Tests
         public void EmptyInstructionsFromAJsonString()
         {
             var json = "{steps:[]}";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             Assert.NotNull(instruction);
             Assert.NotNull(instruction.Steps);
             Assert.IsEmpty(instruction.Steps);
@@ -143,7 +155,7 @@ namespace StepOnThat.Tests
         public void EmptyInstructionsFromAnEmptyPairOfBraces()
         {
             var json = "{}";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             Assert.NotNull(instruction);
             Assert.NotNull(instruction.Steps);
         }
@@ -159,7 +171,7 @@ namespace StepOnThat.Tests
                     {name:'4', type:'step'}
                 ]
             }";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             Assert.AreEqual("1", instruction.Steps[0].Name);
             Assert.AreEqual("2", instruction.Steps[1].Name);
             Assert.AreEqual(typeof (HttpStep), instruction.Steps[1].GetType());
@@ -172,7 +184,7 @@ namespace StepOnThat.Tests
         public void SingleEmptyStepIsNotNull()
         {
             var json = "{steps:[{}]}";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
             Assert.IsNotEmpty(instruction.Steps);
             Assert.NotNull(instruction.Steps.Single());
         }
@@ -182,7 +194,7 @@ namespace StepOnThat.Tests
         public void UnknownStepTypeFailsToDeserialise()
         {
             var json = "{steps:[{type:'someUnknownType'}]}";
-            var instruction = InstructionsReaderWriter.Read(json);
+            var instruction = readerWriter.Read(json);
         }
 
         [Test]
@@ -197,7 +209,7 @@ namespace StepOnThat.Tests
 
             foreach (Instructions instruction in instructions)
             {
-                WriteAndTheReadInstructions(instruction);
+                WriteAndThenReadInstructions(instruction);
             }
         }
     }

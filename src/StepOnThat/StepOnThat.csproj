@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -64,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\AutofacJsonSerialisationContractResolver.cs" />
     <Compile Include="Browser\Actions\Back.cs" />
     <Compile Include="Browser\Actions\BrowserAction.cs" />
     <Compile Include="Browser\Actions\IMatch.cs" />
@@ -80,6 +85,7 @@
     <Compile Include="Browser\BrowserStep.cs" />
     <Compile Include="Browser\IWebBrowser.cs" />
     <Compile Include="Browser\WebBrowser.cs" />
+    <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="ExMethods.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Http\HttpStep.cs" />
@@ -91,7 +97,7 @@
     <Compile Include="Instructions.cs" />
     <Compile Include="InstructionsRunner.cs" />
     <Compile Include="IStepResult.cs" />
-    <Compile Include="JsonTypePropertyConverter.cs" />
+    <Compile Include="Infrastructure\JsonTypePropertyConverter.cs" />
     <Compile Include="Step.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StepResult.cs" />
