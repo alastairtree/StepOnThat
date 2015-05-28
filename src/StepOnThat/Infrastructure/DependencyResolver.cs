@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using Autofac.Extras.DynamicProxy2;
 using StepOnThat.Browser.Actions;
 
 namespace StepOnThat.Infrastructure
@@ -26,14 +27,27 @@ namespace StepOnThat.Infrastructure
             //TODO: Make this be based on an attribute? [UsesVariables] perhaps?
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (Step).IsAssignableFrom(t))
-                .AsSelf();
+                .AsSelf()
+                .EnableClassInterceptors()
+                .InterceptedBy(typeof(VariableInterceptor));
 
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (BrowserAction).IsAssignableFrom(t))
-                .AsSelf();
+                .AsSelf()
+                .EnableClassInterceptors()
+                .InterceptedBy(typeof(VariableInterceptor));
+
+            builder.RegisterType<VariableStore>()
+                .AsImplementedInterfaces()
+                .SingleInstance();
+
+            builder.RegisterType<VariableInterceptor>().AsSelf();
+
+            builder.RegisterType<StepRunner>().AsImplementedInterfaces();
+
+            builder.RegisterType<InstructionsRunner>().AsImplementedInterfaces();
 
             Container = builder.Build();
-
         }
 
         public IContainer Container { get; private set; }

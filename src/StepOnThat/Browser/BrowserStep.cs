@@ -21,7 +21,7 @@ namespace StepOnThat.Tests.Browser
         {
         }
 
-        public string Url { get; set; }
+        public virtual string Url { get; set; }
 
         public ICollection<BrowserAction> Steps { get; private set; }
 

@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Browser\BrowserStepTests.cs" />
     <Compile Include="Http\HttpStepTests.cs" />
+    <Compile Include="Infrastructure\VariableInterceptorTests.cs" />
     <Compile Include="JsonTypePropertyConverterTest.cs" />
     <Compile Include="StepTestsBase.cs" />
     <Compile Include="Browser\WebBrowserTests.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="StepTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@ namespace StepOnThat.Browser.Actions
 {
     public class Set : Interaction
     {
-        public string Value { get; set; }
+        public virtual string Value { get; set; }
 
         public override void Run(IWebBrowser browser)
         {

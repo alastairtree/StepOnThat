@@ -7,6 +7,6 @@ namespace StepOnThat.Browser.Actions
             browser.VerifyTitle(Match);
         }
 
-        public string Match { get; set; }
+        public virtual string Match { get; set; }
     }
 }

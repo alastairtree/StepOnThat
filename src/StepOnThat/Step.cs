@@ -9,7 +9,7 @@ namespace StepOnThat
             get { return GetType().Name; }
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public override bool Equals(object obj)
         {

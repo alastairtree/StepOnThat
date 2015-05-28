@@ -2,7 +2,7 @@ namespace StepOnThat.Browser.Actions
 {
     public class Verify : Interaction, IMatch
     {
-        public string Match { get; set; }
+        public virtual string Match { get; set; }
 
         public override void Run(IWebBrowser browser)
         {

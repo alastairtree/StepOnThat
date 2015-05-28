@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StepOnThat.Infrastructure;
 
 namespace StepOnThat
 {
-    public class InstructionsRunner
+    public class InstructionsRunner : IInstructionsRunner
     {
         private IExecuteSteps stepRunner;
 

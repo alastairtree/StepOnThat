@@ -9,8 +9,6 @@ namespace StepOnThat
 {
     public class Program
     {
-        private static InstructionsRunner runner = new InstructionsRunner(new StepRunner());
-
         public static int Main(string[] args)
         {
             try
@@ -42,6 +40,8 @@ namespace StepOnThat
                         var reader = new InstructionsReaderWriter(scope);
 
                         var ins = reader.ReadFile(options.File);
+
+                        var runner = scope.Resolve<IInstructionsRunner>();
 
                         result = await runner.Run(ins);
                     }

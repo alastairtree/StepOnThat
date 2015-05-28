@@ -21,13 +21,13 @@ namespace StepOnThat.Http
         {
         }
 
-        public string Url { get; set; }
+        public virtual string Url { get; set; }
 
-        public string Method { get; set; }
+        public virtual string Method { get; set; }
 
-        public string Data { get; set; }
+        public virtual string Data { get; set; }
 
-        public string ContentType { get; set; }
+        public virtual string ContentType { get; set; }
 
         public override async Task<IStepResult> RunAsync()
         {
