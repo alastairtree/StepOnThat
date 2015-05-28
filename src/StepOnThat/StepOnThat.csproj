@@ -103,7 +103,7 @@
     <Compile Include="IDataStepResult.cs" />
     <Compile Include="IExecuteSteps.cs" />
     <Compile Include="Infrastructure\IHaveVariables.cs" />
-    <Compile Include="Infrastructure\VariableINterceptor.cs" />
+    <Compile Include="Infrastructure\VariableInterceptor.cs" />
     <Compile Include="Infrastructure\VariableStore.cs" />
     <Compile Include="InstructionsReaderWriter.cs" />
     <Compile Include="Instructions.cs" />

@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Text.RegularExpressions;
 using Castle.DynamicProxy;
+using System.Collections.Generic;
+using System;
 
 namespace StepOnThat.Infrastructure
 {
@@ -22,8 +24,16 @@ namespace StepOnThat.Infrastructure
                 && IsPublicStringReturnType(invocation.Method)
                 && ReturnsAVariable(invocation))
             {
-                var valueOfVariableWithThatName = variables[invocation.ReturnValue as string];
-
+                var variableName = Regex.Replace(invocation.ReturnValue as string, @"\$|{|}", "");
+                string valueOfVariableWithThatName;
+                try
+                {
+                    valueOfVariableWithThatName = variables[variableName];
+                }
+                catch (KeyNotFoundException)
+                {
+                    throw new ApplicationException(String.Format("Could not find variable with name {0}", variableName));
+                }
                 invocation.ReturnValue = valueOfVariableWithThatName ?? "";
             }
         }
@@ -43,6 +53,7 @@ namespace StepOnThat.Infrastructure
         private static bool IsPublicStringReturnType(MethodInfo method)
         {
             return method.IsPublic && method.ReturnType.IsValueType && (method.ReturnType == typeof (string));
+            return method.IsPublic && (method.ReturnType == typeof(string));
         }
     }
 }
