@@ -12,13 +12,10 @@ namespace StepOnThat.Http
 
         public HttpStep(ISendHttp http)
         {
+            if(http == null) throw new ArgumentNullException("http");
+
             Method = "GET";
             this.http = http;
-        }
-
-        public HttpStep()
-            : this(new HttpClient())
-        {
         }
 
         public virtual string Url { get; set; }

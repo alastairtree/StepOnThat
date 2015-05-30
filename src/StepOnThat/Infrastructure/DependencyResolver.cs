@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using Autofac;
 using Autofac.Extras.DynamicProxy2;
+using StepOnThat.Browser;
 using StepOnThat.Browser.Actions;
+using StepOnThat.Http;
 
 namespace StepOnThat.Infrastructure
 {
@@ -46,6 +48,10 @@ namespace StepOnThat.Infrastructure
             builder.RegisterType<StepRunner>().AsImplementedInterfaces();
 
             builder.RegisterType<InstructionsRunner>().AsImplementedInterfaces();
+
+            builder.RegisterType<WebBrowser>().AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<HttpClient>().AsImplementedInterfaces();
 
             Container = builder.Build();
         }
