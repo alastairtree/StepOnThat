@@ -90,7 +90,7 @@ namespace StepOnThat.Tests
                 ]
             }";
             var instruction = readerWriter.Read(json);
-            Assert.True(instruction.Steps[0].IsTypeOf<Browser>());
+            Assert.True(instruction.Steps[0].IsTypeOf<BrowserStep>());
 
             var browserStep = (BrowserStep) instruction.Steps[0];
             Assert.AreEqual(2, browserStep.Steps.Count);

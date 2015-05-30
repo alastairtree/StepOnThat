@@ -12,7 +12,7 @@ namespace StepOnThat
 
         public static bool IsTypeOf<TStep>(this Step step) where TStep : Step
         {
-            return step.GetType().IsAssignableFrom(typeof (TStep));
+            return step.GetType().Name.Replace("Proxy","").Equals(typeof(TStep).Name);
         }
     }
 }
