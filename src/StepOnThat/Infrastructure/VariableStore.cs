@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace StepOnThat.Infrastructure
 {
-    class VariableStore : IVariables
+    internal class VariableStore : IVariables
     {
         public VariableStore()
         {
-            this.Items = new Dictionary<string, string>();
+            Items = new Dictionary<string, string>();
         }
 
         public IDictionary<string, string> Items { get; private set; }

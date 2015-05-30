@@ -23,7 +23,7 @@ namespace StepOnThat.Tests.Browser
 
         public override async Task<IStepResult> RunAsync()
         {
-            if(browser == null)
+            if (browser == null)
                 throw new NullReferenceException("Browser step is missing its IWebBrowser dependency browser!");
 
             return await Task.Run(() =>

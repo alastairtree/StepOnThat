@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Castle.DynamicProxy;
-using System.Collections.Generic;
-using System;
 
 namespace StepOnThat.Infrastructure
 {
@@ -52,7 +52,7 @@ namespace StepOnThat.Infrastructure
 
         private static bool IsPublicStringReturnType(MethodInfo method)
         {
-            return method.IsPublic && (method.ReturnType == typeof(string));
+            return method.IsPublic && (method.ReturnType == typeof (string));
         }
     }
 }

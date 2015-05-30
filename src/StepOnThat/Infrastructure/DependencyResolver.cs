@@ -13,9 +13,11 @@ namespace StepOnThat.Infrastructure
 
         public DependencyResolver(bool init = true)
         {
-            if(init)
+            if (init)
                 Init();
         }
+
+        public IContainer Container { get; private set; }
 
         public void Init()
         {
@@ -31,13 +33,13 @@ namespace StepOnThat.Infrastructure
                 .Where(t => typeof (Step).IsAssignableFrom(t))
                 .AsSelf()
                 .EnableClassInterceptors()
-                .InterceptedBy(typeof(VariableInterceptor));
+                .InterceptedBy(typeof (VariableInterceptor));
 
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (BrowserAction).IsAssignableFrom(t))
                 .AsSelf()
                 .EnableClassInterceptors()
-                .InterceptedBy(typeof(VariableInterceptor));
+                .InterceptedBy(typeof (VariableInterceptor));
 
             builder.RegisterType<VariableStore>()
                 .AsImplementedInterfaces()
@@ -55,7 +57,5 @@ namespace StepOnThat.Infrastructure
 
             Container = builder.Build();
         }
-
-        public IContainer Container { get; private set; }
     }
 }

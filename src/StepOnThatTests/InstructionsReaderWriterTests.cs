@@ -2,29 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using StepOnThat.Browser.Actions;
 using StepOnThat.Http;
+using StepOnThat.Http.Tests;
 using StepOnThat.Infrastructure;
 using StepOnThat.Tests.Browser;
-using StepOnThat.Http.Tests;
 
 namespace StepOnThat.Tests
 {
     [TestFixture]
     public class InstructionsReaderWriterTests
     {
-        private DependencyResolver resolver;
-        private InstructionsReaderWriter readerWriter;
-
         [SetUp]
         public void BeforeEachTest()
         {
             resolver = new DependencyResolver();
             readerWriter = new InstructionsReaderWriter(resolver.Container);
         }
+
+        private DependencyResolver resolver;
+        private InstructionsReaderWriter readerWriter;
 
         private void WriteAndThenReadInstructions(Instructions instructions)
         {
@@ -138,7 +137,7 @@ namespace StepOnThat.Tests
 
             await new InstructionsRunner(new StepRunner()).Run(instruction);
         }
-        
+
 
         [Test]
         public void EmptyInstructionsFromAJsonString()
@@ -173,7 +172,7 @@ namespace StepOnThat.Tests
             var instruction = readerWriter.Read(json);
             Assert.AreEqual("1", instruction.Steps[0].Name);
             Assert.AreEqual("2", instruction.Steps[1].Name);
-            Assert.AreEqual(new HttpStep(new HttpClient()) { Name = "2" }, instruction.Steps[1]);
+            Assert.AreEqual(new HttpStep(new HttpClient()) {Name = "2"}, instruction.Steps[1]);
             Assert.AreEqual("3", instruction.Steps[2].Name);
             Assert.True(instruction.Steps[2].IsTypeOf<HttpStep>());
             Assert.AreEqual("4", instruction.Steps[3].Name);

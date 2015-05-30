@@ -19,7 +19,7 @@ namespace StepOnThat.Infrastructure
 
             Func<object> resolver = () =>
             {
-                var item =  container.Resolve(objectType);
+                var item = container.Resolve(objectType);
                 return item;
             };
 

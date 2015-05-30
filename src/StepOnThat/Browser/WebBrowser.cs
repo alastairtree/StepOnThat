@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Policy;
 using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -144,8 +143,8 @@ namespace StepOnThat.Browser
             }
             catch (WebDriverTimeoutException)
             {
-
-                throw new ApplicationException(string.Format("Could not match url '{0}' to wildcard '{1}'", lastUrl, urlWildcard));
+                throw new ApplicationException(string.Format("Could not match url '{0}' to wildcard '{1}'", lastUrl,
+                    urlWildcard));
             }
 
             return this;
@@ -236,8 +235,8 @@ namespace StepOnThat.Browser
             }
             catch (WebDriverTimeoutException)
             {
-
-                throw new ApplicationException(string.Format("Could not match title '{0}' to wildcard '{1}'", lastTitle, titleWildcard));
+                throw new ApplicationException(string.Format("Could not match title '{0}' to wildcard '{1}'", lastTitle,
+                    titleWildcard));
             }
 
             return this;

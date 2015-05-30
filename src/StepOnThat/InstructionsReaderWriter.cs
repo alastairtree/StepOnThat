@@ -13,10 +13,12 @@ namespace StepOnThat
 
         public InstructionsReaderWriter(ILifetimeScope container)
         {
-            JsonConverter[] converters = {
-            new JsonTypePropertyConverter<Step>(container, defaultyValueType: typeof (Step), ignorePatternInTypeName: @"(?<=\w)[sS]tep$"),
-            new JsonTypePropertyConverter<BrowserAction>(container, typePropertyName: "action")
-        };
+            JsonConverter[] converters =
+            {
+                new JsonTypePropertyConverter<Step>(container, typeof (Step),
+                    ignorePatternInTypeName: @"(?<=\w)[sS]tep$"),
+                new JsonTypePropertyConverter<BrowserAction>(container, typePropertyName: "action")
+            };
             var contractResolver = new AutofacJsonSerialisationContractResolver(container);
             settings = new JsonSerializerSettings
             {

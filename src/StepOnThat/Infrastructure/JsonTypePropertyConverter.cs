@@ -15,7 +15,8 @@ namespace StepOnThat.Infrastructure
         private readonly string typePropertyName;
         private Func<string, string> applyIgnorePatternToTypeName;
 
-        public JsonTypePropertyConverter(ILifetimeScope container, Type defaultyValueType = null, string typePropertyName = "type", string ignorePatternInTypeName = null)
+        public JsonTypePropertyConverter(ILifetimeScope container, Type defaultyValueType = null,
+            string typePropertyName = "type", string ignorePatternInTypeName = null)
         {
             this.container = container;
             this.typePropertyName = typePropertyName;

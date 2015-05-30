@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Autofac;
+﻿using Autofac;
 using NUnit.Framework;
 using StepOnThat.Browser;
 using StepOnThat.Http;
@@ -12,6 +11,13 @@ namespace StepOnThat.Tests
     public class ExMethodsTests
     {
         [Test]
+        public void IsTypeOfReturnsFalseWhenTypesDontMatch()
+        {
+            Assert.IsFalse(new HttpStep(new HttpClient()).IsTypeOf<Step>());
+            Assert.IsFalse(new HttpStep(new HttpClient()).IsTypeOf<BrowserStep>());
+        }
+
+        [Test]
         public void IsTypeOfReturnsTrueWhenTypesMatch()
         {
             Assert.IsTrue(new HttpStep(new HttpClient()).IsTypeOf<HttpStep>());
@@ -20,16 +26,8 @@ namespace StepOnThat.Tests
         }
 
         [Test]
-        public void IsTypeOfReturnsFalseWhenTypesDontMatch()
-        {
-            Assert.IsFalse(new HttpStep(new HttpClient()).IsTypeOf<Step>());
-            Assert.IsFalse(new HttpStep(new HttpClient()).IsTypeOf<BrowserStep>());
-        }
-
-        [Test]
         public void IsTypeOfReturnsTrueWhenTypesMatchIGgnoringProxy()
         {
-
             using (var scope = new DependencyResolver().Container.BeginLifetimeScope())
             {
                 var sut = scope.Resolve<BrowserStep>();

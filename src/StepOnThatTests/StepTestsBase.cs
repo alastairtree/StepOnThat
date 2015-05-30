@@ -1,25 +1,25 @@
 ﻿using System.Threading.Tasks;
+using Autofac;
 using NUnit.Framework;
 using StepOnThat.Infrastructure;
-using Autofac;
 
 namespace StepOnThat.Tests
 {
     public class StepTestsBase<TStep> where TStep : Step
     {
-        DependencyResolver resolver = new DependencyResolver();
         private ILifetimeScope injector;
+        private DependencyResolver resolver = new DependencyResolver();
 
         [SetUp]
         public void Before()
         {
-            this.injector = resolver.Container.BeginLifetimeScope();
+            injector = resolver.Container.BeginLifetimeScope();
         }
 
         [TearDown]
         public void After()
         {
-            this.injector.Dispose();
+            injector.Dispose();
         }
 
 
@@ -78,7 +78,7 @@ namespace StepOnThat.Tests
         public void TypeIsEqualToClassName()
         {
             var actual = GetStepForTesting().Type;
-            var expected = typeof(TStep).Name;
+            var expected = typeof (TStep).Name;
             Assert.AreEqual(expected, actual);
         }
     }
