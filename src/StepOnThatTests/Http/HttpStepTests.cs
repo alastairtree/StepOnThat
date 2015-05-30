@@ -7,9 +7,7 @@ namespace StepOnThat.Http.Tests
     [TestFixture]
     public class HttpStepTests : StepTestsBase<HttpStep>
     {
-        // check at http://requestb.in/vzw90wvz?inspect
-        private string testRequestUrl = "http://requestb.in/vzw90wvz";
-
+        public static string testRequestUrl = "http://httpbin.org/";
 
         [Test]
         public async Task RunSimpleGetHttpHasData()
@@ -24,7 +22,7 @@ namespace StepOnThat.Http.Tests
         public async Task RunSimpleGetHttpSuceeds()
         {
             var step = GetStepForTesting();
-            step.Url = "http://requestb.in/vzw90wvz";
+            step.Url = testRequestUrl;
             IStepResult result = await step.RunAsync();
             Assert.True(result.Success);
             Assert.True(result.Error == null);
@@ -34,7 +32,7 @@ namespace StepOnThat.Http.Tests
         public async Task SendAPostWithMessageToRequestBin()
         {
             var step = GetStepForTesting();
-            step.Url = "http://requestb.in/vzw90wvz";
+            step.Url = testRequestUrl + "post";
             step.Method = "POST";
             step.Data = "{'message':'hello api!'}";
             IStepResult result = await step.RunAsync();

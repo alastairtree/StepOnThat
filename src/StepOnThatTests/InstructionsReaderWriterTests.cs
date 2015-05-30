@@ -125,7 +125,7 @@ namespace StepOnThat.Tests
                     },
                     {
                         type: 'Http', 
-                        url: 'http://requestb.in/vzw90wvz', 
+                        url: '" + HttpStepTests.testRequestUrl + @"', 
                         method: 'post', 
                         data : '{message:\""hello APIs\""}'
                     }
