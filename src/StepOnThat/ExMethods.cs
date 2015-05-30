@@ -9,5 +9,10 @@ namespace StepOnThat
         {
             return coll == null || !coll.Any();
         }
+
+        public static bool IsTypeOf<TStep>(this Step step) where TStep : Step
+        {
+            return step.GetType().IsAssignableFrom(typeof (TStep));
+        }
     }
 }

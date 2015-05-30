@@ -9,6 +9,7 @@ using StepOnThat.Browser.Actions;
 using StepOnThat.Http;
 using StepOnThat.Infrastructure;
 using StepOnThat.Tests.Browser;
+using StepOnThat.Http.Tests;
 
 namespace StepOnThat.Tests
 {
@@ -90,7 +91,7 @@ namespace StepOnThat.Tests
                 ]
             }";
             var instruction = readerWriter.Read(json);
-            Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
+            Assert.AreEqual("Browser", instruction.Steps[0].Type);
 
             var browserStep = (BrowserStep) instruction.Steps[0];
             Assert.AreEqual(2, browserStep.Steps.Count);
@@ -121,7 +122,6 @@ namespace StepOnThat.Tests
                             { action: 'waitfor', target: '.thumb img' },
                             { action: 'address', match: '*.wikipedia.*' },
                         ]
-        
                     },
                     {
                         type: 'Http', 
@@ -132,7 +132,7 @@ namespace StepOnThat.Tests
                 ]
             }";
             var instruction = readerWriter.Read(json);
-            Assert.AreEqual(typeof (BrowserStep), instruction.Steps[0].GetType());
+            Assert.True(instruction.Steps[0].IsTypeOf<BrowserStep>());
 
             var browserStep = (BrowserStep) instruction.Steps[0];
             Assert.AreEqual(6, browserStep.Steps.Count);
@@ -174,9 +174,9 @@ namespace StepOnThat.Tests
             var instruction = readerWriter.Read(json);
             Assert.AreEqual("1", instruction.Steps[0].Name);
             Assert.AreEqual("2", instruction.Steps[1].Name);
-            Assert.AreEqual(typeof (HttpStep), instruction.Steps[1].GetType());
+            Assert.AreEqual(new HttpStep(new HttpClient()) { Name = "2" }, instruction.Steps[1]);
             Assert.AreEqual("3", instruction.Steps[2].Name);
-            Assert.AreEqual(typeof (HttpStep), instruction.Steps[2].GetType());
+            Assert.AreEqual(typeof (HttpStep).Name, instruction.Steps[2].Type);
             Assert.AreEqual("4", instruction.Steps[3].Name);
         }
 
