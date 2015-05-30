@@ -70,8 +70,7 @@ namespace StepOnThat.Tests
         public void ReadingHttpStepReturnsTheCorrectType(string json)
         {
             var instruction = readerWriter.Read(json);
-            var expected = "HttpStep";
-            Assert.AreEqual(expected, instruction.Steps[0].Type);
+            Assert.True(instruction.Steps[0].IsTypeOf<HttpStep>());
         }
 
         [Test]
@@ -91,7 +90,7 @@ namespace StepOnThat.Tests
                 ]
             }";
             var instruction = readerWriter.Read(json);
-            Assert.AreEqual("Browser", instruction.Steps[0].Type);
+            Assert.True(instruction.Steps[0].IsTypeOf<Browser>());
 
             var browserStep = (BrowserStep) instruction.Steps[0];
             Assert.AreEqual(2, browserStep.Steps.Count);
@@ -176,7 +175,7 @@ namespace StepOnThat.Tests
             Assert.AreEqual("2", instruction.Steps[1].Name);
             Assert.AreEqual(new HttpStep(new HttpClient()) { Name = "2" }, instruction.Steps[1]);
             Assert.AreEqual("3", instruction.Steps[2].Name);
-            Assert.AreEqual(typeof (HttpStep).Name, instruction.Steps[2].Type);
+            Assert.True(instruction.Steps[2].IsTypeOf<HttpStep>());
             Assert.AreEqual("4", instruction.Steps[3].Name);
         }
 
