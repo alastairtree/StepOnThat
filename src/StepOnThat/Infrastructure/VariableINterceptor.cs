@@ -52,7 +52,6 @@ namespace StepOnThat.Infrastructure
 
         private static bool IsPublicStringReturnType(MethodInfo method)
         {
-            return method.IsPublic && method.ReturnType.IsValueType && (method.ReturnType == typeof (string));
             return method.IsPublic && (method.ReturnType == typeof(string));
         }
     }
