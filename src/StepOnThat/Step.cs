@@ -6,7 +6,7 @@ namespace StepOnThat
     {
         public string Type
         {
-            get { return GetType().Name; }
+            get { return GetType().Name.Replace("Proxy",""); }
         }
 
         public virtual string Name { get; set; }
