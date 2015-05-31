@@ -13,7 +13,8 @@ namespace StepOnThat
             this.stepRunner = stepRunner;
         }
 
-        public async Task<bool> Run(Instructions instructions, IEnumerable<Property> propertiesToOverride = null, List<IStepResult> results = null)
+        public async Task<bool> Run(Instructions instructions, IEnumerable<Property> propertiesToOverride = null,
+            List<IStepResult> results = null)
         {
             if (instructions == null || instructions.Steps.IsNullOrEmpty())
                 return true;

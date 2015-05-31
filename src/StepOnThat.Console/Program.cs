@@ -45,7 +45,10 @@ namespace StepOnThat
 
                         result.InstructionsRunner = scope.Resolve<IInstructionsRunner>();
 
-                        result.Success = await result.InstructionsRunner.Run(result.Instructions, overrideProperties, stepResults: result.StepResults);
+                        result.Success =
+                            await
+                                result.InstructionsRunner.Run(result.Instructions, overrideProperties,
+                                    result.StepResults);
                     }
 
                     result.Message = string.Format("Result: {0}",

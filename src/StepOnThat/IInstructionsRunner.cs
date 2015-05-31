@@ -5,6 +5,7 @@ namespace StepOnThat
 {
     public interface IInstructionsRunner
     {
-        Task<bool> Run(Instructions instructions, IEnumerable<Property> propertiesToOverride = null, List<IStepResult> stepResults = null);
+        Task<bool> Run(Instructions instructions, IEnumerable<Property> propertiesToOverride = null,
+            List<IStepResult> stepResults = null);
     }
 }

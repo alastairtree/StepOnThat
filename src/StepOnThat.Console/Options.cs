@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 
 namespace StepOnThat
@@ -14,7 +13,10 @@ namespace StepOnThat
         [Option('f', "File", HelpText = "Path of the JSON steps file to be processed", Required = true)]
         public string File { get; set; }
 
-        [OptionArray('p', "Properties", HelpText = "Set values to properties that will override properties in the file. Syntax steponthat.exe -p key1=value1 key2=value2")]
+        [OptionArray('p', "Properties",
+            HelpText =
+                "Set values to properties that will override properties in the file. Syntax steponthat.exe -p key1=value1 key2=value2"
+            )]
         public string[] Properties { get; set; }
 
         [HelpOption]

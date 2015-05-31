@@ -19,7 +19,7 @@ namespace StepOnThat
 
         public IList<Step> Steps { get; set; }
 
-        public IHasProperties Properties { get; private set; } 
+        public IHasProperties Properties { get; private set; }
 
         public override bool Equals(object obj)
         {
