@@ -2,9 +2,8 @@
 
 namespace StepOnThat.Infrastructure
 {
-    public interface IVariables
+    public interface IHasProperties : IList<Property>
     {
-        IDictionary<string, string> Items { get; }
         string this[string name] { get; set; }
     }
 }

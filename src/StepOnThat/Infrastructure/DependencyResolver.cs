@@ -25,27 +25,26 @@ namespace StepOnThat.Infrastructure
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            builder.RegisterType<Instructions>()
-                .UsingConstructor();
+            builder.Register(x=> new Instructions(x.Resolve<IHasProperties>()));
 
             //TODO: Make this be based on an attribute? [UsesVariables] perhaps?
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (Step).IsAssignableFrom(t))
                 .AsSelf()
                 .EnableClassInterceptors()
-                .InterceptedBy(typeof (VariableInterceptor));
+                .InterceptedBy(typeof (PropertyInterceptor));
 
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (BrowserAction).IsAssignableFrom(t))
                 .AsSelf()
                 .EnableClassInterceptors()
-                .InterceptedBy(typeof (VariableInterceptor));
+                .InterceptedBy(typeof (PropertyInterceptor));
 
-            builder.RegisterType<VariableStore>()
+            builder.RegisterType<PropertyCollection>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
 
-            builder.RegisterType<VariableInterceptor>().AsSelf();
+            builder.RegisterType<PropertyInterceptor>().AsSelf();
 
             builder.RegisterType<StepRunner>().AsImplementedInterfaces();
 

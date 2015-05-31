@@ -1,25 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using StepOnThat.Infrastructure;
 
 namespace StepOnThat
 {
     public class Instructions
     {
-        public Instructions() : this(new List<Step>())
-        {
-        }
-
-        public Instructions(List<Step> steps)
-        {
-            Steps = steps;
-        }
-
         public Instructions(IEnumerable<Step> steps)
+            : this(new PropertyCollection(), steps)
         {
-            Steps = new List<Step>(steps);
+        }
+
+        public Instructions(IHasProperties props, IEnumerable<Step> steps = null)
+        {
+            Steps = (steps == null ? new List<Step>() : new List<Step>(steps));
+            Properties = props;
         }
 
         public IList<Step> Steps { get; set; }
+
+        public IHasProperties Properties { get; private set; } 
 
         public override bool Equals(object obj)
         {

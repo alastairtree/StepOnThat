@@ -6,14 +6,14 @@ using Castle.DynamicProxy;
 
 namespace StepOnThat.Infrastructure
 {
-    public class VariableInterceptor : IInterceptor
+    public class PropertyInterceptor : IInterceptor
     {
-        private const string variableMatcher = @"(\s*\$\{[A-z0-9.-]+\}\s*)|(\s*\{\{[A-z0-9.-]+\}\}\s*)";
-        private readonly IVariables variables;
+        private const string PropertyMatcher = @"(\s*\$\{[A-z0-9.-]+\}\s*)|(\s*\{\{[A-z0-9.-]+\}\}\s*)";
+        private readonly IHasProperties properties;
 
-        public VariableInterceptor(IVariables variables)
+        public PropertyInterceptor(IHasProperties properties)
         {
-            this.variables = variables;
+            this.properties = properties;
         }
 
         public void Intercept(IInvocation invocation)
@@ -24,17 +24,20 @@ namespace StepOnThat.Infrastructure
                 && IsPublicStringReturnType(invocation.Method)
                 && ReturnsAVariable(invocation))
             {
-                var variableName = Regex.Replace(invocation.ReturnValue as string, @"\$|{|}", "");
-                string valueOfVariableWithThatName;
-                try
+                if (invocation.ReturnValue != null)
                 {
-                    valueOfVariableWithThatName = variables[variableName];
+                    var name = Regex.Replace(invocation.ReturnValue as string, @"\$|{|}", "");
+                    string variableValue;
+                    try
+                    {
+                        variableValue = properties[name];
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        throw new ApplicationException(String.Format("Could not find variable with name {0}", name));
+                    }
+                    invocation.ReturnValue = variableValue ?? "";
                 }
-                catch (KeyNotFoundException)
-                {
-                    throw new ApplicationException(String.Format("Could not find variable with name {0}", variableName));
-                }
-                invocation.ReturnValue = valueOfVariableWithThatName ?? "";
             }
         }
 
@@ -42,7 +45,7 @@ namespace StepOnThat.Infrastructure
         {
             var result = invocation.ReturnValue as string;
 
-            return !string.IsNullOrEmpty(result) && Regex.IsMatch(result, variableMatcher);
+            return !string.IsNullOrEmpty(result) && Regex.IsMatch(result, PropertyMatcher);
         }
 
         private static bool IsGetterProperty(MethodBase method)

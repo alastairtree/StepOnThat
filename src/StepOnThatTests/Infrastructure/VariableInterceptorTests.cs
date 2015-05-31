@@ -15,7 +15,7 @@ namespace StepOnThat.Infrastructure.Tests
             var resolver = new DependencyResolver();
             using (var scope = resolver.Container.BeginLifetimeScope())
             {
-                var variables = scope.Resolve<IVariables>();
+                var variables = scope.Resolve<IHasProperties>();
 
                 variables["test"] = "EvaluatedAsAVariable";
 
@@ -37,7 +37,7 @@ namespace StepOnThat.Infrastructure.Tests
             var resolver = new DependencyResolver();
             using (var scope = resolver.Container.BeginLifetimeScope())
             {
-                var variables = scope.Resolve<IVariables>();
+                var variables = scope.Resolve<IHasProperties>();
 
                 variables["test"] = "EvaluatedAsAVariable";
 
@@ -46,6 +46,38 @@ namespace StepOnThat.Infrastructure.Tests
                 var ins = reader.Read(@"[{type:'Step',Name:'${test}'}]");
 
                 Assert.AreEqual("EvaluatedAsAVariable", ins.Steps.First().Name);
+            }
+        }
+
+        [Test]
+        public void VariablesCanBeAttachedToInstructions()
+        {
+            var resolver = new DependencyResolver();
+            using (var scope = resolver.Container.BeginLifetimeScope())
+            {
+                var reader = new InstructionsReaderWriter(scope);
+
+                var ins = reader.Read(@"{'properties':[{'key':'test', 'value':'EvaluatedAsAVariable'}], 'steps': [{type:'Step',Name:'${test}'}] }");
+
+                Assert.AreEqual("EvaluatedAsAVariable", ins.Steps.First().Name);
+            }
+        }
+
+
+        [Test]
+        public void PropertiesAreDeserialised()
+        {
+            var resolver = new DependencyResolver();
+            using (var scope = resolver.Container.BeginLifetimeScope())
+            {
+                var reader = new InstructionsReaderWriter(scope);
+
+                var ins = reader.Read(@"{'properties':[{'key':'test', 'value':'EvaluatedAsAVariable'}], 'steps': [{type:'Step',Name:'${test}'}] }");
+
+                Assert.IsNotNull(ins.Properties);
+                Assert.IsNotEmpty(ins.Properties);
+                Assert.AreEqual("EvaluatedAsAVariable", ins.Properties["test"]);
+                Assert.AreEqual("EvaluatedAsAVariable", ins.Properties[0].Value);
             }
         }
     }

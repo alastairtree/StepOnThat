@@ -200,7 +200,7 @@ namespace StepOnThat.Tests
         {
             var instructions = new[]
             {
-                new Instructions()
+                new Instructions(null)
                 , new Instructions(new List<Step>())
                 , new Instructions(new List<Step> {new Step {Name = "test"}})
             };
