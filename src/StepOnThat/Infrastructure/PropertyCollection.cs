@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace StepOnThat.Infrastructure
@@ -13,14 +12,13 @@ namespace StepOnThat.Infrastructure
             {
                 if (this.Any(x => x.Key == name))
                 {
-                    var prop = this.Single(x => x.Key == name);
-                    prop.Value = value;
+                    Remove(this.Single(x => x.Key == name));
+                    Add(new Property(name, value));
                 }
                 else
                 {
-                    this.Add(new Property() {Key = name, Value = value});
+                    Add(new Property(name, value));
                 }
-
             }
         }
     }

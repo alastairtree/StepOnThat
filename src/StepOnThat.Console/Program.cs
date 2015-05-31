@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using CommandLine;
@@ -15,7 +16,8 @@ namespace StepOnThat
             {
                 var task = MainAsync(args);
                 task.Wait();
-                return task.Result;
+                Console.WriteLine(task.Result.Message);
+                return task.Result.ReturnCode;
             }
             catch (Exception ex)
             {
@@ -24,37 +26,36 @@ namespace StepOnThat
             }
         }
 
-        private static async Task<int> MainAsync(string[] args)
+        public static async Task<ExecutionResult> MainAsync(string[] args)
         {
-            var options = new Options();
-            var returnCode = -1;
-            bool result;
+            var result = new ExecutionResult();
 
-            if (Parser.Default.ParseArguments(args, options))
+            if (Parser.Default.ParseArguments(args, result.Options))
             {
-                if (File.Exists(options.File))
+                var overrideProperties = result.Options.Properties.Select(PropertyParser.Get);
+
+                if (File.Exists(result.Options.File))
                 {
                     var resolver = new DependencyResolver();
                     using (var scope = resolver.Container.BeginLifetimeScope())
                     {
                         var reader = new InstructionsReaderWriter(scope);
 
-                        var ins = reader.ReadFile(options.File);
+                        result.Instructions = reader.ReadFile(result.Options.File);
 
-                        var runner = scope.Resolve<IInstructionsRunner>();
+                        result.InstructionsRunner = scope.Resolve<IInstructionsRunner>();
 
-                        result = await runner.Run(ins);
+                        result.Success = await result.InstructionsRunner.Run(result.Instructions, overrideProperties, stepResults: result.StepResults);
                     }
 
+                    result.Message = string.Format("Result: {0}",
+                        result.Success ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
 
-                    Console.WriteLine("Result: {0}",
-                        result ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
-
-                    returnCode = result ? 0 : -1;
+                    result.ReturnCode = result.Success ? 0 : -1;
                 }
             }
 
-            return returnCode;
+            return result;
         }
     }
 }

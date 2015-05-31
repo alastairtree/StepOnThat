@@ -25,7 +25,7 @@ namespace StepOnThat.Infrastructure
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            builder.Register(x=> new Instructions(x.Resolve<IHasProperties>()));
+            builder.Register(x => new Instructions(x.Resolve<IHasProperties>()));
 
             //TODO: Make this be based on an attribute? [UsesVariables] perhaps?
             builder.RegisterAssemblyTypes(assembly)
