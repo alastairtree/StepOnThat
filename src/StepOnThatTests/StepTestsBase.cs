@@ -1,13 +1,33 @@
 ﻿using System.Threading.Tasks;
+using Autofac;
 using NUnit.Framework;
+using StepOnThat.Infrastructure;
 
 namespace StepOnThat.Tests
 {
-    public class StepTestsBase<TStep> where TStep : Step, new()
+    public class StepTestsBase<TStep> where TStep : Step
     {
+        private ILifetimeScope injector;
+        private DependencyResolver resolver = new DependencyResolver();
+
+        [SetUp]
+        public void Before()
+        {
+            injector = resolver.Container.BeginLifetimeScope();
+        }
+
+        [TearDown]
+        public void After()
+        {
+            injector.Dispose();
+        }
+
+
         protected virtual TStep GetStepForTesting(string name = "testName")
         {
-            return new TStep {Name = name};
+            var step = injector.Resolve<TStep>();
+            step.Name = name;
+            return step;
         }
 
         [Test]

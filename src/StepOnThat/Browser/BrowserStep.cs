@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using StepOnThat.Browser;
 using StepOnThat.Browser.Actions;
@@ -16,17 +17,15 @@ namespace StepOnThat.Tests.Browser
             Steps = new List<BrowserAction>();
         }
 
-        public BrowserStep()
-            : this(WebBrowser.Current)
-        {
-        }
-
-        public string Url { get; set; }
+        public virtual string Url { get; set; }
 
         public ICollection<BrowserAction> Steps { get; private set; }
 
         public override async Task<IStepResult> RunAsync()
         {
+            if (browser == null)
+                throw new NullReferenceException("Browser step is missing its IWebBrowser dependency browser!");
+
             return await Task.Run(() =>
             {
                 if (!string.IsNullOrEmpty(Url))

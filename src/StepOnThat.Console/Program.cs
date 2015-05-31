@@ -1,21 +1,23 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using CommandLine;
+using StepOnThat.Infrastructure;
 
 namespace StepOnThat
 {
     public class Program
     {
-        private static InstructionsRunner runner = new InstructionsRunner(new StepRunner());
-
         public static int Main(string[] args)
         {
             try
             {
                 var task = MainAsync(args);
                 task.Wait();
-                return task.Result;
+                Console.WriteLine(task.Result.Message);
+                return task.Result.ReturnCode;
             }
             catch (Exception ex)
             {
@@ -24,27 +26,39 @@ namespace StepOnThat
             }
         }
 
-        private static async Task<int> MainAsync(string[] args)
+        public static async Task<ExecutionResult> MainAsync(string[] args)
         {
-            var options = new Options();
-            var returnCode = -1;
+            var result = new ExecutionResult();
 
-            if (Parser.Default.ParseArguments(args, options))
+            if (Parser.Default.ParseArguments(args, result.Options))
             {
-                if (File.Exists(options.File))
+                var overrideProperties = result.Options.Properties.Select(PropertyParser.Get);
+
+                if (File.Exists(result.Options.File))
                 {
-                    var ins = InstructionsReaderWriter.ReadFile(options.File);
+                    var resolver = new DependencyResolver();
+                    using (var scope = resolver.Container.BeginLifetimeScope())
+                    {
+                        var reader = new InstructionsReaderWriter(scope);
 
-                    var result = await runner.Run(ins);
+                        result.Instructions = reader.ReadFile(result.Options.File);
 
-                    Console.WriteLine("Result: {0}",
-                        result ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
+                        result.InstructionsRunner = scope.Resolve<IInstructionsRunner>();
 
-                    returnCode = result ? 0 : -1;
+                        result.Success =
+                            await
+                                result.InstructionsRunner.Run(result.Instructions, overrideProperties,
+                                    result.StepResults);
+                    }
+
+                    result.Message = string.Format("Result: {0}",
+                        result.Success ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
+
+                    result.ReturnCode = result.Success ? 0 : -1;
                 }
             }
 
-            return returnCode;
+            return result;
         }
     }
 }

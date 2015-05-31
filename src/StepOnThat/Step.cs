@@ -6,10 +6,10 @@ namespace StepOnThat
     {
         public string Type
         {
-            get { return GetType().Name; }
+            get { return GetType().Name.Replace("Proxy", ""); }
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         public override bool Equals(object obj)
         {

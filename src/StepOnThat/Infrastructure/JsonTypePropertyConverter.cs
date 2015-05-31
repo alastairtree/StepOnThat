@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Autofac;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
-namespace StepOnThat
+namespace StepOnThat.Infrastructure
 {
     public class JsonTypePropertyConverter<TType> : CustomCreationConverter<TType>
     {
+        private readonly ILifetimeScope container;
         private readonly string typePropertyName;
         private Func<string, string> applyIgnorePatternToTypeName;
 
-        public JsonTypePropertyConverter(Type defaultyValueType = null, string typePropertyName = "type",
-            string ignorePatternInTypeName = null)
+        public JsonTypePropertyConverter(ILifetimeScope container, Type defaultyValueType = null,
+            string typePropertyName = "type", string ignorePatternInTypeName = null)
         {
+            this.container = container;
             this.typePropertyName = typePropertyName;
             DefaultyValueType = defaultyValueType;
             applyIgnorePatternToTypeName =
@@ -43,7 +46,7 @@ namespace StepOnThat
 
             Type matchedType;
             if (lookup.TryGetValue(typeName, out matchedType))
-                return (TType) Activator.CreateInstance(matchedType);
+                return (TType) container.Resolve(matchedType);
 
             if (string.IsNullOrEmpty(typeName))
                 throw new ApplicationException(

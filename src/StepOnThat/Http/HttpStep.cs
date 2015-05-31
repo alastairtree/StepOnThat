@@ -12,22 +12,19 @@ namespace StepOnThat.Http
 
         public HttpStep(ISendHttp http)
         {
+            if (http == null) throw new ArgumentNullException("http");
+
             Method = "GET";
             this.http = http;
         }
 
-        public HttpStep()
-            : this(new HttpClient())
-        {
-        }
+        public virtual string Url { get; set; }
 
-        public string Url { get; set; }
+        public virtual string Method { get; set; }
 
-        public string Method { get; set; }
+        public virtual string Data { get; set; }
 
-        public string Data { get; set; }
-
-        public string ContentType { get; set; }
+        public virtual string ContentType { get; set; }
 
         public override async Task<IStepResult> RunAsync()
         {

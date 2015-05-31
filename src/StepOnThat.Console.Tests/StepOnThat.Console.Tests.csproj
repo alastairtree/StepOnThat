@@ -68,12 +68,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StepOnThat.Console\StepOnThat.Console.csproj">
       <Project>{5C680786-644D-470B-8BC4-826096C4E3FC}</Project>
       <Name>StepOnThat.Console</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StepOnThat\StepOnThat.csproj">
+      <Project>{C427C3DB-4B11-4337-A388-7391862CA88A}</Project>
+      <Name>StepOnThat</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -51,9 +51,32 @@ or in a more complicated example:
         ]
     }
 
-## We use tools to StepOnThat
+And we also support properties from the json or on the command line
 
-A big thank you to these OSS projects who made this possible.
+    StepOnThat.exe --file instructions.json --properties search-engine=http://www.google.com
+
+    {
+        'properties':[{key:'search-term', value:'hello world'}],
+        'steps': [
+            {
+                type: 'Browser',
+                url: '${search-engine}',
+                steps: [
+                    { action: 'set', target: 'input[title=Search]', value: '${search-term}' },
+                    { action: 'submit' },
+                    { action: 'title', match: '${search-term}*' },
+                    { action: 'click', target: 'div[role=main] a:link' },
+                    { action: 'waitfor', target: '.thumb img' },
+                    { action: 'address', match: '*.wikipedia.*' },
+                ]
+            }
+        ]
+    }
+
+
+## Tools and libs used to StepOnThat
+
+Thank you to these OSS projects who made this possible.
 
 - Newstonsoft.JSON to read and write JSON
 - Selenium WebDriver to do Browser automation
