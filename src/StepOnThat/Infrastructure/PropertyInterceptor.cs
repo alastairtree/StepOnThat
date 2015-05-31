@@ -6,9 +6,9 @@ using Castle.DynamicProxy;
 
 namespace StepOnThat.Infrastructure
 {
-    public class PropertyInterceptor : IInterceptor
+    internal class PropertyInterceptor : IInterceptor
     {
-        private const string PropertyMatcher = @"(\s*\$\{[A-z0-9.-]+\}\s*)|(\s*\{\{[A-z0-9.-]+\}\}\s*)";
+        private const string PropertyMatcher = @"(\$\{[A-z0-9.-]+\})|(\{\{[A-z0-9.-]+\}\})";
         private readonly IHasProperties properties;
 
         public PropertyInterceptor(IHasProperties properties)
@@ -26,19 +26,29 @@ namespace StepOnThat.Infrastructure
             {
                 if (invocation.ReturnValue != null)
                 {
-                    var name = Regex.Replace(invocation.ReturnValue as string, @"\$|{|}", "");
-                    string variableValue;
-                    try
-                    {
-                        variableValue = properties[name];
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        throw new ApplicationException(String.Format("Could not find variable with name {0}", name));
-                    }
-                    invocation.ReturnValue = variableValue ?? "";
+                    var originalValue = invocation.ReturnValue as string;
+                    var newValue = ApplyPropertiesToValue(originalValue);
+                    invocation.ReturnValue = newValue;
                 }
             }
+        }
+
+        public string ApplyPropertiesToValue(string originalValue)
+        {
+            var newValue = Regex.Replace(originalValue, PropertyMatcher, match =>
+            {
+                var name = Regex.Replace(match.Value, @"\$|{|}", "");
+                try
+                {
+                    return properties[name];
+                }
+                catch (KeyNotFoundException)
+                {
+                    throw new ApplicationException(String.Format("Could not find variable with name {0}", name));
+                }
+            });
+
+            return newValue;
         }
 
         private static bool ReturnsAVariable(IInvocation invocation)

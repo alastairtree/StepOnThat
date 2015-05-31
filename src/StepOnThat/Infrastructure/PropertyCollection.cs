@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StepOnThat.Infrastructure
@@ -7,7 +8,11 @@ namespace StepOnThat.Infrastructure
     {
         public string this[string name]
         {
-            get { return this.Single(x => x.Key == name).Value; }
+            get
+            {
+                var found = this.First(x => x.Key.Equals(name, StringComparison.OrdinalIgnoreCase));
+                return found.Value;
+            }
             set
             {
                 if (this.Any(x => x.Key == name))
