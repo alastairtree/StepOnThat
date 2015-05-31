@@ -21,5 +21,12 @@ namespace StepOnThat.Infrastructure
                 }
             }
         }
+
+        public Property Add(string key, string value)
+        {
+            var prop = new Property(key, value);
+            Add(prop);
+            return prop;
+        }
     }
 }
