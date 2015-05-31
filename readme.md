@@ -55,6 +55,8 @@ And we also support properties from the json or on the command line
 
     StepOnThat.exe --file instructions.json --properties search-engine=http://www.google.com
 
+with file
+
     {
         'properties':[{key:'search-term', value:'hello world'}],
         'steps': [
