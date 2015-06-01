@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Autofac;
+using CommandLine;
 using StepOnThat.Infrastructure;
 
 namespace StepOnThat
 {
     public class Program
     {
+        [STAThread]
         public static int Main(string[] args)
         {
             try
@@ -23,23 +29,64 @@ namespace StepOnThat
             }
         }
 
-        public static async Task<Execution> MainAsync(string[] args)
+        public static async Task<ExecutionResult> MainAsync(string[] args)
         {
-            var resolver = new DependencyContainerBuilder();
-            using (var scope = resolver.Container.BeginLifetimeScope())
-            {
-                var options = Options.TryParse(args);
-                var result = new Execution { Options = options };
-                var reader = scope.Resolve<InstructionsReaderWriter>();
-                var runner = scope.Resolve<IInstructionsRunner>();
+            var result = new ExecutionResult();
 
-                if (options.IsValid)
+            if (Parser.Default.ParseArguments(args, result.Options))
+            {
+                var overrideProperties = result.Options.Properties.Select(PropertyParser.Get);
+
+                if (File.Exists(result.Options.File))
                 {
-                    result.Instructions = reader.ReadFile(options.File);
-                    await runner.Run(result);
+                    var resolver = new DependencyResolver();
+                    using (var scope = resolver.Container.BeginLifetimeScope())
+                    {
+                        var reader = new InstructionsReaderWriter(scope);
+
+                        result.Instructions = reader.ReadFile(result.Options.File);
+
+                        result.InstructionsRunner = scope.Resolve<IInstructionsRunner>();
+
+                        if (result.Instructions.Properties.Any(p => p.Key.EndsWith(":prompt")))
+                        {
+                            Application.EnableVisualStyles();
+                            var f = new Form();
+                            var s = new Size(200, 45);
+                            for (int index = 0; index < result.Instructions.Properties.Count; index++)
+                            {
+                                var property = result.Instructions.Properties[index];
+                                f.Controls.Add(new Label
+                                {
+                                    Text = property.Key.Replace(":prompt", ""),
+                                    Size = s,
+                                    Location = new Point(0, index * 60)
+                                });
+                                f.Controls.Add(new TextBox { Name = property.Key, Size = s, Location = new Point(0, index * 60 + 30) });
+                                
+                            }
+                            var button = new Button { Text = "Submit", Size = s, Location = new Point(0, result.Instructions.Properties.Count * 60) };
+                            f.Controls.Add(button);
+                            button.Click += async (obj, evt) =>
+                            {
+                                f.Close();
+                                result.Success =
+                                    await
+                                        result.InstructionsRunner.Run(result.Instructions, overrideProperties,
+                                            result.StepResults);
+                            };
+                            f.ShowDialog();
+                        }
+                    }
+
+                    result.Message = string.Format("Result: {0}",
+                        result.Success ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
+
+                    result.ReturnCode = result.Success ? 0 : -1;
                 }
-                return result;
             }
+
+            return result;
         }
     }
 }
