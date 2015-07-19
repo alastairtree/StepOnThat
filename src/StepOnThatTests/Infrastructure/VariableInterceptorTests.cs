@@ -11,10 +11,10 @@ namespace StepOnThat.Infrastructure.Tests
         [Test]
         public void PropertiesAreDeserialised()
         {
-            var resolver = new DependencyResolver();
+            var resolver = new DependencyContainerBuilder();
             using (var scope = resolver.Container.BeginLifetimeScope())
             {
-                var reader = new InstructionsReaderWriter(scope);
+                var reader = GetReaderWriter(scope);
 
                 var ins =
                     reader.Read(
@@ -27,18 +27,24 @@ namespace StepOnThat.Infrastructure.Tests
             }
         }
 
+        private InstructionsReaderWriter GetReaderWriter(ILifetimeScope scope)
+        {
+            var builder = new InstructionTypeFactory(scope);
+            return new InstructionsReaderWriter(builder);
+        }
+
         [Test]
         public async Task StepsWithVariablesRun
             ()
         {
-            var resolver = new DependencyResolver();
+            var resolver = new DependencyContainerBuilder();
             using (var scope = resolver.Container.BeginLifetimeScope())
             {
                 var variables = scope.Resolve<IHasProperties>();
 
                 variables["test"] = "EvaluatedAsAVariable";
 
-                var reader = new InstructionsReaderWriter(scope);
+                var reader = GetReaderWriter(scope);
 
                 var ins = reader.Read(@"[{type:'Step',Name:'${test}'}]");
 
@@ -53,14 +59,14 @@ namespace StepOnThat.Infrastructure.Tests
         [Test]
         public void VariablesAreInterceptedAndReturned()
         {
-            var resolver = new DependencyResolver();
+            var resolver = new DependencyContainerBuilder();
             using (var scope = resolver.Container.BeginLifetimeScope())
             {
                 var variables = scope.Resolve<IHasProperties>();
 
                 variables["test"] = "EvaluatedAsAVariable";
 
-                var reader = new InstructionsReaderWriter(scope);
+                var reader = GetReaderWriter(scope);
 
                 var ins = reader.Read(@"[{type:'Step',Name:'${test}'}]");
 
@@ -71,10 +77,10 @@ namespace StepOnThat.Infrastructure.Tests
         [Test]
         public void VariablesCanBeAttachedToInstructions()
         {
-            var resolver = new DependencyResolver();
+            var resolver = new DependencyContainerBuilder();
             using (var scope = resolver.Container.BeginLifetimeScope())
             {
-                var reader = new InstructionsReaderWriter(scope);
+                var reader = GetReaderWriter(scope);
 
                 var ins =
                     reader.Read(

@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
+using StepOnThat.Steps;
+using StepOnThat.Steps.Http;
 using StepOnThat.Tests;
 
 namespace StepOnThat.Http.Tests
@@ -10,6 +12,7 @@ namespace StepOnThat.Http.Tests
         public static string testRequestUrl = "http://httpbin.org/";
 
         [Test]
+        [Category("MakesHttpCalls")]
         public async Task RunSimpleGetHttpHasData()
         {
             var step = GetStepForTesting();
@@ -19,6 +22,7 @@ namespace StepOnThat.Http.Tests
         }
 
         [Test]
+        [Category("MakesHttpCalls")]
         public async Task RunSimpleGetHttpSuceeds()
         {
             var step = GetStepForTesting();
@@ -29,6 +33,7 @@ namespace StepOnThat.Http.Tests
         }
 
         [Test]
+        [Category("MakesHttpCalls")]
         public async Task SendAPostWithMessageToRequestBin()
         {
             var step = GetStepForTesting();

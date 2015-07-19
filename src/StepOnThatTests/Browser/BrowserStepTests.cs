@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using StepOnThat.Browser;
-using StepOnThat.Browser.Actions;
+using StepOnThat.Steps.Browser;
+using StepOnThat.Steps.Browser;
+using StepOnThat.Steps.Browser.Actions;
 
 namespace StepOnThat.Tests.Browser
 {

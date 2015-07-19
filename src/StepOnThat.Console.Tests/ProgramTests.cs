@@ -19,8 +19,8 @@ namespace StepOnThat.Console.Tests
             var result = await Program.MainAsync(new[] {"--File", path, "-p", "test=abc", "test2=123"});
             File.Delete(path);
 
-            Assert.AreEqual(2, result.Options.Properties.Length);
-            Assert.AreEqual(expected, result.Options.Properties.Skip(1).First());
+            Assert.AreEqual(2, result.Options.PropertyStrings.Length);
+            Assert.AreEqual(expected, result.Options.PropertyStrings.Skip(1).First());
         }
 
         [Test]
@@ -147,9 +147,9 @@ namespace StepOnThat.Console.Tests
             var result = await Program.MainAsync(new[] {"--File", path, "-p", "test=abc"});
             File.Delete(path);
 
-            Assert.NotNull(result.Options.Properties);
-            Assert.IsNotEmpty(result.Options.Properties);
-            Assert.AreEqual(expected, result.Options.Properties.SingleOrDefault());
+            Assert.NotNull(result.Options.PropertyStrings);
+            Assert.IsNotEmpty(result.Options.PropertyStrings);
+            Assert.AreEqual(expected, result.Options.PropertyStrings.SingleOrDefault());
         }
     }
 }

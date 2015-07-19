@@ -27,6 +27,16 @@ namespace StepOnThat.Infrastructure
             }
         }
 
+        public void Override(IEnumerable<Property> properties)
+        {
+            if (properties == null) return;
+
+            foreach (var property in properties)
+            {
+                this[property.Key] = property.Value;
+            }
+        }
+
         public Property Add(string key, string value)
         {
             var prop = new Property(key, value);

@@ -5,5 +5,6 @@ namespace StepOnThat.Infrastructure
     public interface IHasProperties : IList<Property>
     {
         string this[string name] { get; set; }
+        void Override(IEnumerable<Property> properties);
     }
 }

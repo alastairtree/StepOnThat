@@ -4,10 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using StepOnThat.Browser.Actions;
 using StepOnThat.Http;
 using StepOnThat.Http.Tests;
 using StepOnThat.Infrastructure;
+using StepOnThat.Steps;
+using StepOnThat.Steps.Browser;
+using StepOnThat.Steps.Browser.Actions;
+using StepOnThat.Steps.Http;
 using StepOnThat.Tests.Browser;
 
 namespace StepOnThat.Tests
@@ -18,12 +21,14 @@ namespace StepOnThat.Tests
         [SetUp]
         public void BeforeEachTest()
         {
-            resolver = new DependencyResolver();
-            readerWriter = new InstructionsReaderWriter(resolver.Container);
+            containerBuilder = new DependencyContainerBuilder();
+            builder = new InstructionTypeFactory(containerBuilder.Container);
+            readerWriter = new InstructionsReaderWriter(builder);
         }
 
-        private DependencyResolver resolver;
+        private DependencyContainerBuilder containerBuilder;
         private InstructionsReaderWriter readerWriter;
+        private InstructionTypeFactory builder;
 
         private void WriteAndThenReadInstructions(Instructions instructions)
         {

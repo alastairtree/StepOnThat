@@ -2,18 +2,19 @@
 using Autofac;
 using NUnit.Framework;
 using StepOnThat.Infrastructure;
+using StepOnThat.Steps;
 
 namespace StepOnThat.Tests
 {
     public class StepTestsBase<TStep> where TStep : Step
     {
         private ILifetimeScope injector;
-        private DependencyResolver resolver = new DependencyResolver();
+        private DependencyContainerBuilder containerBuilder = new DependencyContainerBuilder();
 
         [SetUp]
         public void Before()
         {
-            injector = resolver.Container.BeginLifetimeScope();
+            injector = containerBuilder.Container.BeginLifetimeScope();
         }
 
         [TearDown]

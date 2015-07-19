@@ -11,15 +11,15 @@ namespace StepOnThat.Infrastructure
 {
     public class JsonTypePropertyConverter<TType> : CustomCreationConverter<TType>
     {
-        private readonly ILifetimeScope container;
-        private readonly string typePropertyName;
+        private readonly IInstructionTypeFactory typeBuilder;
+        private readonly string typePropertyDiscriminatorName;
         private Func<string, string> applyIgnorePatternToTypeName;
 
-        public JsonTypePropertyConverter(ILifetimeScope container, Type defaultyValueType = null,
-            string typePropertyName = "type", string ignorePatternInTypeName = null)
+        public JsonTypePropertyConverter(IInstructionTypeFactory typeBuilder, Type defaultyValueType = null,
+            string typePropertyDiscriminatorName = "type", string ignorePatternInTypeName = null)
         {
-            this.container = container;
-            this.typePropertyName = typePropertyName;
+            this.typeBuilder = typeBuilder;
+            this.typePropertyDiscriminatorName = typePropertyDiscriminatorName;
             DefaultyValueType = defaultyValueType;
             applyIgnorePatternToTypeName =
                 x => ignorePatternInTypeName.IsNullOrEmpty() ? x : Regex.Replace(x, ignorePatternInTypeName, "");
@@ -34,7 +34,7 @@ namespace StepOnThat.Infrastructure
 
         private TType Create(JObject jObject)
         {
-            var typeName = (string) jObject.Property(typePropertyName);
+            var typeName = (string) jObject.Property(typePropertyDiscriminatorName);
 
             if (typeName != null)
                 typeName = applyIgnorePatternToTypeName(typeName);
@@ -46,7 +46,7 @@ namespace StepOnThat.Infrastructure
 
             Type matchedType;
             if (lookup.TryGetValue(typeName, out matchedType))
-                return (TType) container.Resolve(matchedType);
+                return typeBuilder.Build<TType>(matchedType);
 
             if (string.IsNullOrEmpty(typeName))
                 throw new ApplicationException(

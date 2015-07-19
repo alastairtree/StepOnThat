@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
-using CommandLine;
 using StepOnThat.Infrastructure;
 
 namespace StepOnThat
@@ -26,39 +23,23 @@ namespace StepOnThat
             }
         }
 
-        public static async Task<ExecutionResult> MainAsync(string[] args)
+        public static async Task<Execution> MainAsync(string[] args)
         {
-            var result = new ExecutionResult();
-
-            if (Parser.Default.ParseArguments(args, result.Options))
+            var resolver = new DependencyContainerBuilder();
+            using (var scope = resolver.Container.BeginLifetimeScope())
             {
-                var overrideProperties = result.Options.Properties.Select(PropertyParser.Get);
+                var options = Options.TryParse(args);
+                var result = new Execution { Options = options };
+                var reader = scope.Resolve<InstructionsReaderWriter>();
+                var runner = scope.Resolve<IInstructionsRunner>();
 
-                if (File.Exists(result.Options.File))
+                if (options.IsValid)
                 {
-                    var resolver = new DependencyResolver();
-                    using (var scope = resolver.Container.BeginLifetimeScope())
-                    {
-                        var reader = new InstructionsReaderWriter(scope);
-
-                        result.Instructions = reader.ReadFile(result.Options.File);
-
-                        result.InstructionsRunner = scope.Resolve<IInstructionsRunner>();
-
-                        result.Success =
-                            await
-                                result.InstructionsRunner.Run(result.Instructions, overrideProperties,
-                                    result.StepResults);
-                    }
-
-                    result.Message = string.Format("Result: {0}",
-                        result.Success ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
-
-                    result.ReturnCode = result.Success ? 0 : -1;
+                    result.Instructions = reader.ReadFile(options.File);
+                    await runner.Run(result);
                 }
+                return result;
             }
-
-            return result;
         }
     }
 }

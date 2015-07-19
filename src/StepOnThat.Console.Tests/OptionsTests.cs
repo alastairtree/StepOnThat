@@ -8,7 +8,7 @@ namespace StepOnThat.Tests
         [Test]
         public void GetUsageAlwaysReturnsSomethingUSeful()
         {
-            Assert.IsNotEmpty(new Options().GetUsage());
+            Assert.IsNotEmpty(Options.TryParse(new string[0]).GetUsage());
         }
     }
 }

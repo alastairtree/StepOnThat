@@ -1,8 +1,11 @@
 ﻿using Autofac;
 using NUnit.Framework;
-using StepOnThat.Browser;
+using StepOnThat.Steps.Browser;
 using StepOnThat.Http;
 using StepOnThat.Infrastructure;
+using StepOnThat.Steps;
+using StepOnThat.Steps.Browser;
+using StepOnThat.Steps.Http;
 using StepOnThat.Tests.Browser;
 
 namespace StepOnThat.Tests
@@ -28,7 +31,7 @@ namespace StepOnThat.Tests
         [Test]
         public void IsTypeOfReturnsTrueWhenTypesMatchIGgnoringProxy()
         {
-            using (var scope = new DependencyResolver().Container.BeginLifetimeScope())
+            using (var scope = new DependencyContainerBuilder().Container.BeginLifetimeScope())
             {
                 var sut = scope.Resolve<BrowserStep>();
                 Assert.IsTrue(sut.IsTypeOf<BrowserStep>());

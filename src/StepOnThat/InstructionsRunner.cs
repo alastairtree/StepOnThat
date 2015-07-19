@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StepOnThat.Steps;
 
 namespace StepOnThat
 {
@@ -35,14 +36,15 @@ namespace StepOnThat
             return results.All(x => x.Success);
         }
 
+        public async Task<Execution> Run(Execution execution)
+        {
+            execution.Success = await Run(execution.Instructions, execution.Options.Properties, execution.StepResults);
+            return execution;
+        }
+
         private void ApplyProperties(Instructions instructions, IEnumerable<Property> propertiesToOverride)
         {
-            if (propertiesToOverride == null) return;
-
-            foreach (var property in propertiesToOverride)
-            {
-                instructions.Properties[property.Key] = property.Value;
-            }
+            instructions.Properties.Override(propertiesToOverride);
         }
     }
 }

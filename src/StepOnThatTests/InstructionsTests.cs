@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using StepOnThat.Steps;
 
 namespace StepOnThat.Tests
 {

@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
-using Autofac;
 using Newtonsoft.Json;
-using StepOnThat.Browser.Actions;
 using StepOnThat.Infrastructure;
+using StepOnThat.Steps;
+using StepOnThat.Steps.Browser.Actions;
 
 namespace StepOnThat
 {
@@ -11,15 +11,15 @@ namespace StepOnThat
     {
         private JsonSerializerSettings settings;
 
-        public InstructionsReaderWriter(ILifetimeScope container)
+        public InstructionsReaderWriter(IInstructionTypeFactory typeBuilder)
         {
             JsonConverter[] converters =
             {
-                new JsonTypePropertyConverter<Step>(container, typeof (Step),
+                new JsonTypePropertyConverter<Step>(typeBuilder, defaultyValueType: typeof (Step),
                     ignorePatternInTypeName: @"(?<=\w)[sS]tep$"),
-                new JsonTypePropertyConverter<BrowserAction>(container, typePropertyName: "action")
+                new JsonTypePropertyConverter<BrowserAction>(typeBuilder, typePropertyDiscriminatorName: "action")
             };
-            var contractResolver = new AutofacJsonSerialisationContractResolver(container);
+            var contractResolver = new StepOnThatContractResolver(typeBuilder);
             settings = new JsonSerializerSettings
             {
                 ContractResolver = contractResolver,

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using StepOnThat.Steps.Browser;
 
 namespace StepOnThat.Browser.Tests
 {
