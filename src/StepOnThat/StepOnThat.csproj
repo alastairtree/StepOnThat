@@ -106,6 +106,7 @@
     <Compile Include="Steps\Http\HttpStepResult.cs" />
     <Compile Include="Steps\Http\ISendHttp.cs" />
     <Compile Include="Steps\IDataStepResult.cs" />
+    <Compile Include="Echo.cs" />
     <Compile Include="IExecuteSteps.cs" />
     <Compile Include="Infrastructure\IHasProperties.cs" />
     <Compile Include="Infrastructure\IInstructionTypeFactory.cs" />
@@ -116,8 +117,10 @@
     <Compile Include="Instructions.cs" />
     <Compile Include="InstructionsRunner.cs" />
     <Compile Include="Steps\IStepResult.cs" />
+    <Compile Include="IOutput.cs" />
     <Compile Include="Infrastructure\JsonTypePropertyConverter.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Output.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="PropertyParser.cs" />
     <Compile Include="Steps\Step.cs" />
@@ -135,6 +138,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

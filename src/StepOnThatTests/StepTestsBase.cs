@@ -9,16 +9,28 @@ namespace StepOnThat.Tests
     public class StepTestsBase<TStep> where TStep : Step
     {
         private ILifetimeScope injector;
-        private DependencyContainerBuilder containerBuilder = new DependencyContainerBuilder();
+        private readonly DependencyContainerBuilder containerBuilder = new DependencyContainerBuilder(false);
+
+        protected virtual void OverrideContainerRegistrations(ContainerBuilder builder)
+        {
+            
+        }
 
         [SetUp]
-        public void Before()
+        public virtual void Before()
         {
+            containerBuilder.Init();
+            containerBuilder.Build();
+
+            var builder = new ContainerBuilder();
+            OverrideContainerRegistrations(builder);
+            builder.Update(containerBuilder.Container);
+
             injector = containerBuilder.Container.BeginLifetimeScope();
         }
 
         [TearDown]
-        public void After()
+        public virtual void After()
         {
             injector.Dispose();
         }

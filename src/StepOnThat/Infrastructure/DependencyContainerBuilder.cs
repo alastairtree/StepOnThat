@@ -10,54 +10,65 @@ namespace StepOnThat.Infrastructure
 {
     public class DependencyContainerBuilder
     {
+        internal ContainerBuilder Builder { get; private set; }
+
         public DependencyContainerBuilder(bool init = true)
         {
             if (init)
+            {
                 Init();
+                Build();
+            }
         }
 
         public IContainer Container { get; private set; }
 
         public void Init()
         {
-            var builder = new ContainerBuilder();
+            Builder = new ContainerBuilder();
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            builder.Register(x => new Instructions(x.Resolve<IHasProperties>()));
+            Builder.Register(x => new Instructions(x.Resolve<IHasProperties>()));
 
             //TODO: Make this be based on an attribute? [UsesVariables] perhaps?
-            builder.RegisterAssemblyTypes(assembly)
+            Builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (Step).IsAssignableFrom(t))
                 .AsSelf()
                 .EnableClassInterceptors()
                 .InterceptedBy(typeof (PropertyInterceptor));
 
-            builder.RegisterAssemblyTypes(assembly)
+            Builder.RegisterAssemblyTypes(assembly)
                 .Where(t => typeof (BrowserAction).IsAssignableFrom(t))
                 .AsSelf()
                 .EnableClassInterceptors()
                 .InterceptedBy(typeof (PropertyInterceptor));
 
-            builder.RegisterType<PropertyCollection>()
+            Builder.RegisterType<PropertyCollection>()
                 .AsImplementedInterfaces()
                 .SingleInstance();
 
-            builder.RegisterType<PropertyInterceptor>().AsSelf();
+            Builder.RegisterType<PropertyInterceptor>().AsSelf();
 
-            builder.RegisterType<StepRunner>().AsImplementedInterfaces();
+            Builder.RegisterType<StepRunner>().AsImplementedInterfaces();
 
-            builder.RegisterType<InstructionsRunner>().AsImplementedInterfaces();
+            Builder.RegisterType<InstructionsRunner>().AsImplementedInterfaces();
 
-            builder.RegisterType<WebBrowser>().AsImplementedInterfaces().SingleInstance();
+            Builder.RegisterType<WebBrowser>().AsImplementedInterfaces().SingleInstance();
 
-            builder.RegisterType<HttpClient>().AsImplementedInterfaces();
+            Builder.RegisterType<HttpClient>().AsImplementedInterfaces();
 
-            builder.RegisterType<InstructionTypeFactory>().AsImplementedInterfaces();
+            Builder.RegisterType<InstructionTypeFactory>().AsImplementedInterfaces();
 
-            builder.RegisterType<InstructionsReaderWriter>().AsSelf();
+            Builder.RegisterType<InstructionsReaderWriter>().AsSelf();
 
-            Container = builder.Build();
+            Builder.RegisterType<Output>().AsImplementedInterfaces();
+
+        }
+
+        public void Build()
+        {
+            Container = Builder.Build();
         }
     }
 }

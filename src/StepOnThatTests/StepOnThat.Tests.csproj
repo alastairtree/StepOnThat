@@ -90,6 +90,7 @@
     <Compile Include="Infrastructure\PropertyInterceptorTests.cs" />
     <Compile Include="Infrastructure\VariableInterceptorTests.cs" />
     <Compile Include="JsonTypePropertyConverterTest.cs" />
+    <Compile Include="EchoTests.cs" />
     <Compile Include="StepTestsBase.cs" />
     <Compile Include="Browser\WebBrowserTests.cs" />
     <Compile Include="InstructionsReaderWriterTests.cs" />
