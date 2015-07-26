@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using Moq;
 using NUnit.Framework;
+using StepOnThat.Steps.Browser;
 
 namespace StepOnThat.Infrastructure.Tests
 {
@@ -87,6 +90,40 @@ namespace StepOnThat.Infrastructure.Tests
                         @"{'properties':[{'key':'test', 'value':'EvaluatedAsAVariable'}], 'steps': [{type:'Step',Name:'${test}'}] }");
 
                 Assert.AreEqual("EvaluatedAsAVariable", ins.Steps.First().Name);
+            }
+        }
+
+        [Test]
+        public void VariablesCanBeWritttenToBySteps()
+        {
+            var dependencies = new DependencyContainerBuilder();
+            using (var scope = dependencies.Container.BeginLifetimeScope())
+            {
+                var builder = new ContainerBuilder();
+                var browser = new Mock<IWebBrowser>();
+                browser.Setup(x => x.Get(It.IsAny<string>())).Returns("rightvalue");
+                builder.RegisterInstance(browser.Object).AsImplementedInterfaces();
+                builder.Update(dependencies.Container);
+
+                var variables = scope.Resolve<IHasProperties>();
+                var reader = GetReaderWriter(scope);
+                var runner = scope.Resolve<IInstructionsRunner>();
+
+                var ins = reader.Read(@"{
+                    'properties':[{
+                        'key':'anotherVariable', 
+                        'value':'wrongvalue'
+                    }], 
+                    'steps':[{
+                        'type':'browser',
+                        'url':'http://www.google.com',
+                        'steps':[{'action':'read','target':'.username', 'value':'${variableundertest}'}]
+                    }]                        
+                }");
+
+                Task.WaitAll(runner.Run(ins));
+
+                Assert.AreEqual("rightvalue", variables["variableundertest"]);
             }
         }
     }

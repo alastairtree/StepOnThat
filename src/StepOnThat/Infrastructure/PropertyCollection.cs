@@ -37,6 +37,11 @@ namespace StepOnThat.Infrastructure
             }
         }
 
+        public bool Contains(string name)
+        {
+            return this.Any(x => x.Key.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
         public Property Add(string key, string value)
         {
             var prop = new Property(key, value);

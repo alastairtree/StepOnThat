@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser\Actions\Read.cs" />
     <Compile Include="Execution.cs" />
     <Compile Include="IInstructionsRunner.cs" />
     <Compile Include="Infrastructure\StepOnThatContractResolver.cs" />

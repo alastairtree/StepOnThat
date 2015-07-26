@@ -6,5 +6,6 @@ namespace StepOnThat.Infrastructure
     {
         string this[string name] { get; set; }
         void Override(IEnumerable<Property> properties);
+        bool Contains(string name);
     }
 }
