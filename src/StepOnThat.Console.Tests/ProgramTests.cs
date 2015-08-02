@@ -11,7 +11,7 @@ namespace StepOnThat.Console.Tests
         [Test]
         public async Task MultiplePropertiesAreReadFromCommandLineIntoOptions()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{ steps : [{ type: 'Step', name: 'test' }] }";
             File.WriteAllText(path, instruction);
 
@@ -26,7 +26,7 @@ namespace StepOnThat.Console.Tests
         [Test]
         public async Task PropertiesFromCommandLineAreAddedToInstructions()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{ steps : [{ type: 'Step', name: 'test' }] }";
             File.WriteAllText(path, instruction);
 
@@ -42,7 +42,7 @@ namespace StepOnThat.Console.Tests
         [Test]
         public async Task PropertiesFromCommandLineAreAddedToInstructionsAndOverrideJsonFile()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{ 
                 properties: [{key:'test', value:'not-valid'}],
                 steps : [{ type: 'Step', name: 'test' }] 
@@ -63,7 +63,7 @@ namespace StepOnThat.Console.Tests
         [Category("WebBrowser")]
         public async Task ReadmeExampleReturnsSucessfully()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{
                 'properties':[{key:'search-term', value:'hello world'}],
                 'steps': [
@@ -89,9 +89,25 @@ namespace StepOnThat.Console.Tests
         }
 
         [Test]
+        public void RunConsoleAppForAbadFilePath()
+        {
+            var path = Path.GetTempFileName();
+            const string instruction = @"{ steps : [{ type: 'step', name: 'test' }] }";
+
+            File.WriteAllText(path, instruction);
+
+            const int expected = -1;
+            var actual = Program.Main(new[] {"--File", path + "oops"});
+
+            File.Delete(path);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void RunConsoleAppForASingleBadStep()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{ steps : OOPS [{ type: 'test', name: 'test' }] }";
 
             File.WriteAllText(path, instruction);
@@ -107,7 +123,7 @@ namespace StepOnThat.Console.Tests
         [Test]
         public void RunConsoleAppForASingleNoOpStep()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{ steps : [{ type: 'Step', name: 'test' }] }";
 
             File.WriteAllText(path, instruction);
@@ -121,25 +137,9 @@ namespace StepOnThat.Console.Tests
         }
 
         [Test]
-        public void RunConsoleAppForAbadFilePath()
-        {
-            string path = Path.GetTempFileName();
-            const string instruction = @"{ steps : [{ type: 'step', name: 'test' }] }";
-
-            File.WriteAllText(path, instruction);
-
-            const int expected = -1;
-            var actual = Program.Main(new[] {"--File", path + "oops"});
-
-            File.Delete(path);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         public async Task SinglePropertiesAreReadFromCommandLineIntoOptions()
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             const string instruction = @"{ steps : [{ type: 'Step', name: 'test' }] }";
             File.WriteAllText(path, instruction);
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Moq;
@@ -11,6 +10,12 @@ namespace StepOnThat.Infrastructure.Tests
     [TestFixture]
     public class VariableInterceptorTests
     {
+        private InstructionsReaderWriter GetReaderWriter(ILifetimeScope scope)
+        {
+            var builder = new InstructionTypeFactory(scope);
+            return new InstructionsReaderWriter(builder);
+        }
+
         [Test]
         public void PropertiesAreDeserialised()
         {
@@ -28,12 +33,6 @@ namespace StepOnThat.Infrastructure.Tests
                 Assert.AreEqual("EvaluatedAsAVariable", ins.Properties["test"]);
                 Assert.AreEqual("EvaluatedAsAVariable", ins.Properties[0].Value);
             }
-        }
-
-        private InstructionsReaderWriter GetReaderWriter(ILifetimeScope scope)
-        {
-            var builder = new InstructionTypeFactory(scope);
-            return new InstructionsReaderWriter(builder);
         }
 
         [Test]

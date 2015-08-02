@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
-using StepOnThat.Steps;
 using StepOnThat.Steps.Http;
 using StepOnThat.Tests;
 
@@ -27,7 +26,7 @@ namespace StepOnThat.Http.Tests
         {
             var step = GetStepForTesting();
             step.Url = testRequestUrl;
-            IStepResult result = await step.RunAsync();
+            var result = await step.RunAsync();
             Assert.True(result.Success);
             Assert.True(result.Error == null);
         }
@@ -40,7 +39,7 @@ namespace StepOnThat.Http.Tests
             step.Url = testRequestUrl + "post";
             step.Method = "POST";
             step.Data = "{'message':'hello api!'}";
-            IStepResult result = await step.RunAsync();
+            var result = await step.RunAsync();
             Assert.True(result.Success);
             Assert.True(result.Error == null);
         }

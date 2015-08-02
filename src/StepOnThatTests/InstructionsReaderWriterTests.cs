@@ -4,14 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using StepOnThat.Http;
 using StepOnThat.Http.Tests;
 using StepOnThat.Infrastructure;
 using StepOnThat.Steps;
 using StepOnThat.Steps.Browser;
 using StepOnThat.Steps.Browser.Actions;
 using StepOnThat.Steps.Http;
-using StepOnThat.Tests.Browser;
 
 namespace StepOnThat.Tests
 {
@@ -32,9 +30,9 @@ namespace StepOnThat.Tests
 
         private void WriteAndThenReadInstructions(Instructions instructions)
         {
-            string path = Path.GetTempFileName();
+            var path = Path.GetTempFileName();
             readerWriter.WriteFile(instructions, path);
-            Instructions clone = readerWriter.ReadFile(path);
+            var clone = readerWriter.ReadFile(path);
             Assert.AreEqual(instructions, clone);
             File.Delete(path);
         }
@@ -106,7 +104,6 @@ namespace StepOnThat.Tests
             Assert.AreEqual("a:link", action2.Target);
         }
 
-
         [Test]
         [Category("WebBrowser")]
         public async Task ComplexBrowserActionsDeserialiseAndRun()
@@ -142,7 +139,6 @@ namespace StepOnThat.Tests
 
             await new InstructionsRunner(new StepRunner()).Run(instruction);
         }
-
 
         [Test]
         public void EmptyInstructionsFromAJsonString()
@@ -210,7 +206,7 @@ namespace StepOnThat.Tests
                 , new Instructions(new List<Step> {new Step {Name = "test"}})
             };
 
-            foreach (Instructions instruction in instructions)
+            foreach (var instruction in instructions)
             {
                 WriteAndThenReadInstructions(instruction);
             }

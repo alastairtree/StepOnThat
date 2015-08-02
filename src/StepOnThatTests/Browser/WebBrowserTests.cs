@@ -7,8 +7,8 @@ namespace StepOnThat.Browser.Tests
     [Category("WebBrowser")]
     public class WebBrowserTests
     {
-        private string homepageUrl = "http://www.bbc.co.uk";
-        private string searchboxCss = "input[type=text][name=q]";
+        private readonly string homepageUrl = "http://www.bbc.co.uk";
+        private readonly string searchboxCss = "input[type=text][name=q]";
         private WebBrowser browser;
 
         [TestFixtureSetUp]
@@ -47,7 +47,6 @@ namespace StepOnThat.Browser.Tests
                 .VerifyUrl("*bbc.co*");
             Assert.IsTrue(browser.GetTitle().Contains("BBC"));
         }
-
 
         [Test]
         public void ClickUsingXPathTest()

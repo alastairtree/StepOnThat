@@ -20,7 +20,7 @@ namespace StepOnThat.Tests
 
             var runner = new InstructionsRunner(new StepRunner());
 
-            foreach (Instructions instruction in instructions)
+            foreach (var instruction in instructions)
             {
                 var expected = true;
                 var actual = await runner.Run(instruction);

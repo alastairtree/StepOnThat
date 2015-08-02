@@ -8,12 +8,11 @@ namespace StepOnThat.Tests
 {
     public class StepTestsBase<TStep> where TStep : Step
     {
-        private ILifetimeScope injector;
         private readonly DependencyContainerBuilder containerBuilder = new DependencyContainerBuilder(false);
+        private ILifetimeScope injector;
 
         protected virtual void OverrideContainerRegistrations(ContainerBuilder builder)
         {
-            
         }
 
         [SetUp]
@@ -34,7 +33,6 @@ namespace StepOnThat.Tests
         {
             injector.Dispose();
         }
-
 
         protected virtual TStep GetStepForTesting(string name = "testName")
         {
@@ -59,7 +57,7 @@ namespace StepOnThat.Tests
         public async void RunAsyncTestSuceeds()
         {
             var step = GetStepForTesting();
-            IStepResult result = await step.RunAsync();
+            var result = await step.RunAsync();
             Assert.True(result.Success);
         }
 
@@ -67,7 +65,7 @@ namespace StepOnThat.Tests
         public async Task RunEmptyAsyncTestHasNoError()
         {
             var step = GetStepForTesting();
-            IStepResult result = await step.RunAsync();
+            var result = await step.RunAsync();
             Assert.True(result.Error == null);
         }
 
