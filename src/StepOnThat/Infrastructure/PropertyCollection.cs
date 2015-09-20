@@ -37,6 +37,11 @@ namespace StepOnThat.Infrastructure
             }
         }
 
+        public bool HasPromptProperties
+        {
+            get { return this.Any(p => p.Key.EndsWith(":prompt")); }
+        }
+
         public Property Add(string key, string value)
         {
             var prop = new Property(key, value);
