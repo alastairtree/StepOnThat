@@ -23,7 +23,7 @@ namespace StepOnThat
             Application.EnableVisualStyles();
         }
 
-        public async Task PromptForVariablesWithUI(Func<Task> onFormSubmitted)
+        public void PromptForVariablesWithUI(Func<Task> onFormSubmitted)
         {
             form = CreateForm();
 
@@ -32,7 +32,7 @@ namespace StepOnThat
                 AddLabelAndTextboxForProperty(property, properties.IndexOf(property));
             }
 
-            await AddSubmitButton(onFormSubmitted);
+            AddSubmitButton(onFormSubmitted);
 
             AddCloseButton();
 
@@ -54,7 +54,7 @@ namespace StepOnThat
             form.Controls.Add(closeButton);
         }
 
-        private async Task AddSubmitButton(Func<Task> onFormSubmitted)
+        private void AddSubmitButton(Func<Task> onFormSubmitted)
         {
             var submitButton = new Button
             {

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Autofac;
 using CommandLine;
 using StepOnThat.Infrastructure;
@@ -54,7 +52,7 @@ namespace StepOnThat
                         if (instructions.Properties.HasPromptProperties)
                         {
                             var form = new DynamicPromptForm(instructions.Properties);
-                            await form.PromptForVariablesWithUI(() => RunSteps(result, overrideProperties));
+                            form.PromptForVariablesWithUI(() => RunSteps(result, overrideProperties));
                         }
                         else
                         {
@@ -64,7 +62,7 @@ namespace StepOnThat
 
                     result.Message = string.Format("Result: {0}",
                         result.Success ? "Success - you stepped on that!" : "Failure - doh you slipped up!");
-;
+                    ;
                 }
             }
 
