@@ -1,12 +1,9 @@
 ﻿using Autofac;
 using NUnit.Framework;
-using StepOnThat.Steps.Browser;
-using StepOnThat.Http;
 using StepOnThat.Infrastructure;
 using StepOnThat.Steps;
 using StepOnThat.Steps.Browser;
 using StepOnThat.Steps.Http;
-using StepOnThat.Tests.Browser;
 
 namespace StepOnThat.Tests
 {

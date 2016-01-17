@@ -1,7 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using StepOnThat.Steps;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace StepOnThat.Tests
 {

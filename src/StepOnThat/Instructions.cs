@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using StepOnThat.Infrastructure;
+﻿using StepOnThat.Infrastructure;
 using StepOnThat.Steps;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StepOnThat
 {

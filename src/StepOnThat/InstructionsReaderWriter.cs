@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using StepOnThat.Infrastructure;
 using StepOnThat.Steps;
 using StepOnThat.Steps.Browser.Actions;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace StepOnThat
 {

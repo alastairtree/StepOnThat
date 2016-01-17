@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using StepOnThat.Steps;
 using StepOnThat.Steps.Http;
 using StepOnThat.Tests;
+using System.Threading.Tasks;
 
 namespace StepOnThat.Http.Tests
 {

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Castle.DynamicProxy;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Castle.DynamicProxy;
 
 namespace StepOnThat.Infrastructure
 {

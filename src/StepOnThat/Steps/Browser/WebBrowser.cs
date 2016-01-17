@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using StepOnThat.Steps.Browser;
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace StepOnThat.Steps.Browser
 {

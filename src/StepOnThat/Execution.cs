@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using StepOnThat.Steps;
+﻿using StepOnThat.Steps;
+using System.Collections.Generic;
 
 namespace StepOnThat
 {

@@ -1,10 +1,10 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using StepOnThat.Steps;
 using StepOnThat.Steps.Browser;
 using StepOnThat.Steps.Browser.Actions;
 using StepOnThat.Steps.Http;
+using System.Reflection;
 
 namespace StepOnThat.Infrastructure
 {

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using NUnit.Framework;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StepOnThat.Infrastructure.Tests
 {

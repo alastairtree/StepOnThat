@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StepOnThat
 {

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using StepOnThat.Http;
+﻿using NUnit.Framework;
 using StepOnThat.Http.Tests;
 using StepOnThat.Infrastructure;
 using StepOnThat.Steps;
 using StepOnThat.Steps.Browser;
 using StepOnThat.Steps.Browser.Actions;
 using StepOnThat.Steps.Http;
-using StepOnThat.Tests.Browser;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StepOnThat.Tests
 {

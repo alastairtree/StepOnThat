@@ -1,8 +1,7 @@
-﻿using System;
+﻿using StepOnThat.Steps.Browser.Actions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using StepOnThat.Steps.Browser;
-using StepOnThat.Steps.Browser.Actions;
 
 namespace StepOnThat.Steps.Browser
 {

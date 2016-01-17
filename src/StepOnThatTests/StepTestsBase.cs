@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using NUnit.Framework;
 using StepOnThat.Infrastructure;
 using StepOnThat.Steps;
+using System.Threading.Tasks;
 
 namespace StepOnThat.Tests
 {

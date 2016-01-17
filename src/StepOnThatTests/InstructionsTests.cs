@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using StepOnThat.Steps;
+using System.Collections.Generic;
 
 namespace StepOnThat.Tests
 {

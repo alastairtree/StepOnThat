@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using StepOnThat.Steps.Browser;
-using StepOnThat.Steps.Browser;
 using StepOnThat.Steps.Browser.Actions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StepOnThat.Tests.Browser
 {

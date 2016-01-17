@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using StepOnThat.Steps;
+﻿using StepOnThat.Steps;
+using System.Threading.Tasks;
 
 namespace StepOnThat
 {

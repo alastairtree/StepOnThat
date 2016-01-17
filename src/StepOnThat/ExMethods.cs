@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using StepOnThat.Steps;
+using System.Collections.Generic;
 using System.Linq;
-using StepOnThat.Steps;
 
 namespace StepOnThat
 {

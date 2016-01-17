@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using StepOnThat.Steps;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using StepOnThat.Steps;
 
 namespace StepOnThat
 {
