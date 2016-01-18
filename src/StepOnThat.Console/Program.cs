@@ -25,8 +25,13 @@ namespace StepOnThat
 
         public static async Task<Execution> MainAsync(string[] args)
         {
-            var resolver = new DependencyContainerBuilder();
-            using (var scope = resolver.Container.BeginLifetimeScope())
+            var builder = new DependencyContainerBuilder();
+            return await MainAsync(args, builder);
+        }
+
+        internal static async Task<Execution> MainAsync(string[] args, DependencyContainerBuilder builder)
+        {
+            using (var scope = builder.Container.BeginLifetimeScope())
             {
                 var options = Options.TryParse(args);
                 var result = new Execution { Options = options };

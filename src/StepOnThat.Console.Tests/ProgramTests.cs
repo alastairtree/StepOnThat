@@ -2,6 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using System;
+using StepOnThat.Infrastructure;
+using Moq;
+using Autofac;
 
 namespace StepOnThat.Console.Tests
 {
@@ -86,6 +90,44 @@ namespace StepOnThat.Console.Tests
             File.Delete(path);
 
             Assert.True(result.Success);
+        }
+
+        [Test]
+        [Category("WebBrowser")]
+        public async Task ReadAndEchoValueFromTextBox()
+        {
+            var path = Path.GetTempFileName();
+            const string instruction = @"{
+                'steps': [
+                    {
+                        type: 'Browser',
+                        url: 'http://www.google.com',
+                        steps: [
+                            { action: 'set', target: 'input[title=Search]', value: 'testSearch' },
+                            { action: 'submit' },
+                            { action: 'read', target: 'input[title=Search]', value: '${search-term}' },
+                        ]
+                    },
+                    {
+                        type:'echo', text:'${search-term}'
+                    }
+                ]
+            }";
+            File.WriteAllText(path, instruction);
+            var dependenciesBuilder = new DependencyContainerBuilder();
+            var builder = new ContainerBuilder();
+
+            Mock<IOutput> output = new Mock<IOutput>();
+            builder.RegisterInstance(output.Object).As<IOutput>();
+            builder.Update(dependenciesBuilder.Container);
+
+
+            var result =
+                await Program.MainAsync(new[] { "--File", path }, dependenciesBuilder);
+            File.Delete(path);
+
+            Assert.True(result.Success);
+            output.Verify(_ => _.Write(It.Is<string>(x => x == "testSearch")), Times.Once);
         }
 
         [Test]

@@ -13,7 +13,7 @@ namespace StepOnThat
             Text = string.Empty;
         }
 
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
 
         public override bool Equals(object obj)
         {

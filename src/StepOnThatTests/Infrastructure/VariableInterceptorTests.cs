@@ -125,5 +125,42 @@ namespace StepOnThat.Infrastructure.Tests
                 Assert.AreEqual("rightvalue", variables["variableundertest"]);
             }
         }
+
+        [Test]
+        public void CanEchoVariables()
+        {
+         Mock<IOutput> output = new Mock<IOutput>();
+
+        var dependencies = new DependencyContainerBuilder();
+            using (var scope = dependencies.Container.BeginLifetimeScope())
+            {
+                var builder = new ContainerBuilder();
+                var browser = new Mock<IWebBrowser>();
+                browser.Setup(x => x.Get(It.IsAny<string>())).Returns("rightvalue");
+                builder.RegisterInstance(browser.Object).AsImplementedInterfaces();
+                 builder.RegisterInstance(output.Object).As<IOutput>();
+               builder.Update(dependencies.Container);
+
+
+                var variables = scope.Resolve<IHasProperties>();
+                var reader = GetReaderWriter(scope);
+                var runner = scope.Resolve<IInstructionsRunner>();
+
+                var ins = reader.Read(@"{
+                    'properties':[{
+                        'key':'variableName', 
+                        'value':'someValue'
+                    }], 
+                    'steps':[{
+                        'type':'echo',
+                        'text':'${variableName}'
+                    }]                        
+                }");
+
+                Task.WaitAll(runner.Run(ins));
+
+                output.Verify(_ => _.Write(It.Is<string>(x => x == "someValue")), Times.Once);
+            }
+        }
     }
 }
